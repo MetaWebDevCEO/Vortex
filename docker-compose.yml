@@ -1,0 +1,17 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: metavortex-web
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+    networks:
+      - metavortex-network
+
+networks:
+  metavortex-network:
+    driver: bridge
