@@ -1,7 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Menu, Zap } from "lucide-react";
+import Image from "next/image";
+import { Menu } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -30,10 +31,15 @@ export function Navbar() {
   return (
     <header className="fixed top-0 z-50 w-full bg-transparent backdrop-blur-md transition-all duration-300">
       <div className="mx-auto flex h-20 w-full max-w-[1920px] items-center justify-between px-6 sm:px-10 lg:px-12">
-        <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center gap-2 font-bold text-2xl tracking-tight transition-opacity hover:opacity-80">
-            <Zap className="h-7 w-7 text-primary fill-primary/20" />
-            <span>Vortex</span>
+        <div className="relative flex h-full items-center ml-10 w-32">
+          <Link href="/" className="relative flex items-center w-full h-full transition-opacity hover:opacity-80">
+            <Image 
+              src="/vortex.svg" 
+              alt="Vortex Logo" 
+              width={128} 
+              height={128} 
+              className="absolute top-1/2 left-0 -translate-y-1/2 h-32 w-32 max-w-none"
+            />
           </Link>
         </div>
 
@@ -79,7 +85,13 @@ export function Navbar() {
             <SheetContent side="right" className="w-[300px] sm:w-[400px]">
               <SheetHeader>
                 <SheetTitle className="text-left font-bold flex items-center gap-2 text-xl">
-                  <Zap className="h-6 w-6 text-primary fill-primary/20" /> Vortex
+                  <Image 
+                    src="/vortex.svg" 
+                    alt="Vortex Logo" 
+                    width={48} 
+                    height={48} 
+                    className="h-12 w-12"
+                  /> 
                 </SheetTitle>
               </SheetHeader>
               <nav className="flex flex-col gap-4 mt-10">
