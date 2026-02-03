@@ -19,6 +19,7 @@ export const metadata: Metadata = {
   icons: {
     icon: "/isotipo.svg",
   },
+  
 };
 
 export default function RootLayout({
