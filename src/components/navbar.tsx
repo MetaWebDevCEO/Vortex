@@ -38,7 +38,7 @@ export function Navbar() {
               alt="Vortex Logo" 
               width={128} 
               height={128} 
-              className="absolute top-1/2 left-0 -translate-y-1/2 h-32 w-32 max-w-none"
+              className="absolute top-[40%] left-0 -translate-y-1/2 h-32 w-32 max-w-none"
             />
           </Link>
         </div>
