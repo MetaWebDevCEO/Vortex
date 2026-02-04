@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu } from "lucide-react";
@@ -21,6 +22,18 @@ import {
 } from "@/components/ui/sheet";
 
 export function Navbar() {
+  const router = useRouter();
+  // TODO: Replace with actual auth logic
+  const isLoggedIn = false;
+
+  const handleLoginClick = () => {
+    if (isLoggedIn) {
+      router.push("/dashboard");
+    } else {
+      router.push("/sign-up");
+    }
+  };
+
   const links = [
     { href: "/", label: "Home" },
     { href: "/compañia", label: "Compañia" },
@@ -65,12 +78,16 @@ export function Navbar() {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="ghost" className="rounded-full px-6 font-semibold text-base">
-            Log in
-          </Button>
-          <Button className="rounded-full px-6 shadow-lg transition-all duration-300 font-semibold text-base">
-            Sign In
-          </Button>
+          <Link href="/login">
+            <Button variant="ghost" className="rounded-full px-6 font-semibold text-base">
+              Log in
+            </Button>
+          </Link>
+          <Link href="/signup">
+            <Button className="rounded-full px-6 shadow-lg transition-all duration-300 font-semibold text-base">
+              Sign Up
+            </Button>
+          </Link>
         </div>
 
         {/* Mobile Navigation */}
@@ -105,12 +122,18 @@ export function Navbar() {
                   </Link>
                 ))}
                 <div className="flex flex-col gap-2 mt-6">
-                  <Button variant="ghost" className="w-full rounded-full text-base font-semibold">
+                  <Button 
+                    variant="ghost" 
+                    className="w-full rounded-full text-base font-semibold"
+                    onClick={handleLoginClick}
+                  >
                     Log in
                   </Button>
-                  <Button className="w-full rounded-full text-base font-semibold shadow-md">
-                    Sign In
-                  </Button>
+                  <Link href="/sign-up" className="w-full">
+                    <Button className="w-full rounded-full text-base font-semibold shadow-md">
+                      Sign Up
+                    </Button>
+                  </Link>
                 </div>
               </nav>
             </SheetContent>
