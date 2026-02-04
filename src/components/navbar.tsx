@@ -23,22 +23,22 @@ import {
 export function Navbar() {
   const links = [
     { href: "/", label: "Home" },
-    { href: "/company", label: "Company" },
-    { href: "/pricing", label: "Pricing" },
-    { href: "/contact", label: "Support" },
+    { href: "/compañia", label: "Compañia" },
+    { href: "/precios", label: "Precios" },
+    { href: "/soporte", label: "Soporte" },
   ];
 
   return (
     <header className="fixed top-0 z-50 w-full bg-transparent backdrop-blur-md transition-all duration-300">
       <div className="mx-auto flex h-20 w-full max-w-[1920px] items-center justify-between px-6 sm:px-10 lg:px-12">
         <div className="relative flex h-full items-center ml-10 w-32">
-          <Link href="/" className="relative flex items-center w-full h-full transition-opacity hover:opacity-80">
+          <Link href="/" className="relative flex items-center w-full h-full">
             <Image 
               src="/vortex.svg" 
               alt="Vortex Logo" 
               width={128} 
               height={128} 
-              className="absolute top-[40%] left-0 -translate-y-1/2 h-32 w-32 max-w-none"
+              className="absolute top-1/2 left-0 -translate-y-1/2 h-32 w-32 max-w-none"
             />
           </Link>
         </div>
@@ -52,7 +52,7 @@ export function Navbar() {
                   <NavigationMenuLink asChild>
                     <Link
                       href={link.href}
-                      className={`${navigationMenuTriggerStyle()} bg-transparent hover:bg-primary/10 data-[active]:bg-primary/10 h-10 px-5 text-base font-medium`}
+                      className={`${navigationMenuTriggerStyle()} bg-transparent hover:bg-transparent hover:text-current data-[active]:bg-primary/10 h-10 px-5 text-base font-medium`}
                     >
                       {link.label}
                     </Link>
@@ -65,10 +65,10 @@ export function Navbar() {
 
         {/* Desktop Actions */}
         <div className="hidden md:flex items-center gap-4">
-          <Button variant="ghost" className="rounded-full px-6 font-semibold text-base hover:bg-primary/10">
+          <Button variant="ghost" className="rounded-full px-6 font-semibold text-base">
             Log in
           </Button>
-          <Button className="rounded-full px-6 shadow-lg hover:shadow-primary/25 hover:scale-105 transition-all duration-300 font-semibold text-base">
+          <Button className="rounded-full px-6 shadow-lg transition-all duration-300 font-semibold text-base">
             Sign In
           </Button>
         </div>
@@ -77,7 +77,7 @@ export function Navbar() {
         <div className="md:hidden">
           <Sheet>
             <SheetTrigger asChild>
-              <Button variant="ghost" size="icon" className="hover:bg-primary/10 rounded-full h-10 w-10">
+              <Button variant="ghost" size="icon" className="rounded-full h-10 w-10 hover:bg-transparent hover:text-current">
                 <Menu className="h-6 w-6" />
                 <span className="sr-only">Abrir menú</span>
               </Button>
