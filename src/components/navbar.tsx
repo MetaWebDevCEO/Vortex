@@ -30,7 +30,7 @@ export function Navbar() {
     if (isLoggedIn) {
       router.push("/dashboard");
     } else {
-      router.push("/sign-up");
+      router.push("/login");
     }
   };
 
@@ -129,7 +129,7 @@ export function Navbar() {
                   >
                     Log in
                   </Button>
-                  <Link href="/sign-up" className="w-full">
+                  <Link href="/signup" className="w-full">
                     <Button className="w-full rounded-full text-base font-semibold shadow-md">
                       Sign Up
                     </Button>
