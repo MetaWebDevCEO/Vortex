@@ -47,9 +47,11 @@ export function Hero() {
         
         {/* Buttons */}
         <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center w-full">
-          <Button size="lg" className="gap-2 font-semibold px-8 h-12 text-base shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300">
-            Comenzar Ahora <ArrowRight className="h-4 w-4" />
-          </Button>
+          <Link href="/dashboard">
+            <Button size="lg" className="gap-2 font-semibold px-8 h-12 text-base shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300">
+              Comenzar Ahora <ArrowRight className="h-4 w-4" />
+            </Button>
+          </Link>
           <Button size="lg" variant="outline" className="font-semibold px-8 h-12 text-base border-neutral-200 hover:bg-neutral-100 transition-all duration-300">
             Más información <ArrowRight className="h-4 w-4 ml-1" />
           </Button>

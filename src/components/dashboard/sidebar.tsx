@@ -69,7 +69,6 @@ export function Sidebar({ className }: SidebarProps) {
       title: "APP BACKEND",
       items: [
         { label: "Data API", icon: Server, href: "/dashboard/api" },
-        { label: "Auth", icon: ShieldCheck, href: "/dashboard/auth" },
       ]
     }
   ];

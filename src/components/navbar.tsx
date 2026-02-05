@@ -23,16 +23,6 @@ import {
 
 export function Navbar() {
   const router = useRouter();
-  // TODO: Replace with actual auth logic
-  const isLoggedIn = false;
-
-  const handleLoginClick = () => {
-    if (isLoggedIn) {
-      router.push("/dashboard");
-    } else {
-      router.push("/login");
-    }
-  };
 
   const links = [
     { href: "/", label: "Home" },
@@ -80,12 +70,12 @@ export function Navbar() {
         <div className="hidden md:flex items-center gap-4">
           <Link href="/login">
             <Button variant="ghost" className="rounded-full px-6 font-semibold text-base">
-              Log in
+              Login
             </Button>
           </Link>
           <Link href="/signup">
             <Button className="rounded-full px-6 shadow-lg transition-all duration-300 font-semibold text-base">
-              Sign Up
+              Sign up
             </Button>
           </Link>
         </div>
@@ -122,16 +112,14 @@ export function Navbar() {
                   </Link>
                 ))}
                 <div className="flex flex-col gap-2 mt-6">
-                  <Button 
-                    variant="ghost" 
-                    className="w-full rounded-full text-base font-semibold"
-                    onClick={handleLoginClick}
-                  >
-                    Log in
-                  </Button>
+                  <Link href="/login" className="w-full">
+                    <Button variant="ghost" className="w-full rounded-full text-base font-semibold">
+                      Login
+                    </Button>
+                  </Link>
                   <Link href="/signup" className="w-full">
                     <Button className="w-full rounded-full text-base font-semibold shadow-md">
-                      Sign Up
+                      Sign up
                     </Button>
                   </Link>
                 </div>
