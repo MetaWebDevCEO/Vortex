@@ -19,17 +19,31 @@ import {
   ShieldCheck,
   ChevronDown,
   MessageSquare,
-  ChevronsLeft
+  ChevronsLeft,
+  LucideIcon
 } from "lucide-react";
 
 import Image from "next/image";
 
 interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
 
+type SidebarItem = {
+    label: string;
+    icon: LucideIcon;
+    href: string;
+    badge?: string;
+};
+
+type SidebarSection = {
+    title: string;
+    extra?: string;
+    items: SidebarItem[];
+};
+
 export function Sidebar({ className }: SidebarProps) {
   const pathname = usePathname();
 
-  const sections = [
+  const sections: SidebarSection[] = [
     {
       title: "PROJECT",
       items: [
