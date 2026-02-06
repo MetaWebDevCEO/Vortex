@@ -6,20 +6,19 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   LayoutDashboard,
-  GitBranch,
   Settings,
-  Plug,
-  Activity,
-  LineChart,
-  Database,
-  Table,
-  HardDrive,
-  EyeOff,
-  Server,
-  ShieldCheck,
+  Box,
+  Calculator,
+  Truck,
+  MapPin,
+  Route,
+  RefreshCw,
+  FileCheck,
+  AlertTriangle,
+  BarChart2,
+  Users,
+  Shield,
   ChevronDown,
-  MessageSquare,
-  ChevronsLeft,
   LucideIcon
 } from "lucide-react";
 
@@ -45,30 +44,29 @@ export function Sidebar({ className }: SidebarProps) {
 
   const sections: SidebarSection[] = [
     {
-      title: "PROJECT",
+      title: "PLANEACIÓN",
       items: [
-        { label: "Dashboard", icon: LayoutDashboard, href: "/dashboard" },
-        { label: "Branches", icon: GitBranch, href: "/dashboard/branches" },
-        { label: "Integrations", icon: Plug, href: "/dashboard/integrations" },
-        { label: "Settings", icon: Settings, href: "/dashboard/settings" },
+        { label: "Cubicaje y Consolidación", icon: Box, href: "/dashboard/cubicaje" },
+        { label: "Cotizaciones Automáticas", icon: Calculator, href: "/dashboard/cotizaciones" },
+        { label: "Gestión de Órdenes (TMS)", icon: Truck, href: "/dashboard/ordenes" },
       ]
     },
     {
-      title: "BRANCH",
-      extra: "production",
+      title: "CONTROL",
       items: [
-        { label: "Overview", icon: Activity, href: "/dashboard/overview" },
-        { label: "Monitoring", icon: LineChart, href: "/dashboard/monitoring" },
-        { label: "SQL Editor", icon: Database, href: "/dashboard/sql-editor" },
-        { label: "Tables", icon: Table, href: "/dashboard/tables" },
-        { label: "Backup & Restore", icon: HardDrive, href: "/dashboard/backup" },
-        { label: "Data Masking", icon: EyeOff, href: "/dashboard/masking", badge: "BETA" },
+        { label: "Tracking en Tiempo Real", icon: MapPin, href: "/dashboard/tracking" },
+        { label: "Asignación de Viajes", icon: Route, href: "/dashboard/asignacion" },
+        { label: "Marketplace de Retornos", icon: RefreshCw, href: "/dashboard/retornos" },
+        { label: "Evidencia Digital (POD)", icon: FileCheck, href: "/dashboard/pod" },
+        { label: "Gestión de Incidencias", icon: AlertTriangle, href: "/dashboard/incidencias" },
+        { label: "Analítica y KPIs", icon: BarChart2, href: "/dashboard/analitica" },
       ]
     },
     {
-      title: "APP BACKEND",
+      title: "USUARIOS",
       items: [
-        { label: "Data API", icon: Server, href: "/dashboard/api" },
+        { label: "Gestión de Usuarios", icon: Users, href: "/dashboard/users" },
+        { label: "Roles y Permisos", icon: Shield, href: "/dashboard/users/roles" },
       ]
     }
   ];
@@ -90,7 +88,7 @@ export function Sidebar({ className }: SidebarProps) {
                      <div className="mb-2 px-2">
                         <div className="flex items-center justify-between px-2 py-1.5 border rounded-md bg-background shadow-sm hover:bg-accent cursor-pointer group transition-colors">
                            <div className="flex items-center gap-2">
-                                <GitBranch className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground" />
+                                <LayoutDashboard className="h-3.5 w-3.5 text-muted-foreground group-hover:text-foreground" />
                                 <span className="text-sm font-medium">{section.extra}</span>
                            </div>
                            <ChevronDown className="h-3 w-3 text-muted-foreground opacity-50 group-hover:opacity-100" />
@@ -101,19 +99,19 @@ export function Sidebar({ className }: SidebarProps) {
                 <div className="space-y-1">
                   {section.items.map((item) => (
                     <Link
-                      key={item.href}
-                      href={item.href}
-                      className={cn(
-                        "flex items-center w-full h-8 px-2 text-sm font-medium rounded-md transition-colors mb-0.5",
-                        pathname === item.href 
-                            ? "bg-secondary text-secondary-foreground" 
-                            : "text-muted-foreground hover:text-foreground hover:bg-accent/50"
-                      )}
+                        key={item.href}
+                        href={item.href}
+                        className={cn(
+                            "group flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium hover:bg-accent hover:text-accent-foreground transition-all duration-200",
+                            pathname === item.href ? "bg-accent text-accent-foreground" : "transparent"
+                        )}
                     >
-                        <item.icon className="mr-2 h-4 w-4" />
-                        <span>{item.label}</span>
+                        <div className="flex items-center gap-3">
+                            <item.icon className={cn("h-4 w-4 transition-colors", pathname === item.href ? "text-foreground" : "text-muted-foreground group-hover:text-foreground")} />
+                            <span>{item.label}</span>
+                        </div>
                         {item.badge && (
-                            <span className="ml-auto text-[10px] bg-purple-100 text-purple-600 px-1.5 py-0.5 rounded font-medium">
+                            <span className="ml-auto text-[10px] bg-primary/10 text-primary px-1.5 py-0.5 rounded-full font-semibold">
                                 {item.badge}
                             </span>
                         )}
@@ -124,18 +122,6 @@ export function Sidebar({ className }: SidebarProps) {
             ))}
           </div>
         </div>
-      </div>
-      
-      {/* Bottom Actions */}
-      <div className="absolute bottom-4 px-6 w-64 space-y-1">
-        <Button variant="ghost" className="w-full justify-start h-8 px-2 text-muted-foreground hover:text-foreground">
-            <MessageSquare className="mr-2 h-4 w-4" />
-            Feedback
-        </Button>
-        <Button variant="ghost" className="w-full justify-start h-8 px-2 text-muted-foreground hover:text-foreground">
-            <ChevronsLeft className="mr-2 h-4 w-4" />
-            Collapse menu
-        </Button>
       </div>
     </div>
   );
