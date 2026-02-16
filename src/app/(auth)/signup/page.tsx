@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { useRouter } from "next/navigation"
 import { supabase } from "@/lib/supabase"
+import Image from "next/image"
 
 export default function SignupPage() {
   const router = useRouter()
@@ -47,50 +48,47 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="flex w-full flex-col items-center gap-8">
-      {/* Header Text Section */}
-      <div className="text-center space-y-2 relative z-10">
-        <h1 className="text-4xl md:text-6xl font-bold tracking-tight text-white drop-shadow-lg">
-          JOIN THE
-          <br />
-          <span className="bg-gradient-to-b from-white to-zinc-400 bg-clip-text text-transparent">
-            VORTEX REVOLUTION
-          </span>
-        </h1>
-        <p className="text-zinc-400 text-sm md:text-base font-light tracking-wide">
-          Create your account and start building the future today
-        </p>
-      </div>
+    <div className="min-h-screen w-full bg-white flex items-center justify-center px-4">
+      <div className="w-full max-w-md space-y-8">
+        <div className="flex flex-col items-center gap-3 text-center">
+          <Image src="/Vortex_logo.svg" alt="Vortex" width={220} height={220} priority />
+          <div>
+            <p className="text-xs font-medium tracking-[0.2em] text-zinc-500 uppercase">
+              Plataforma logística
+            </p>
+            <h1 className="mt-1 text-2xl font-semibold tracking-tight text-black">
+              Crear cuenta
+            </h1>
+            <p className="mt-1 text-sm text-zinc-500">
+              Regístrate para empezar
+            </p>
+          </div>
+        </div>
 
-      {/* Signup Card */}
-      <div className="w-full max-w-md bg-zinc-950/80 backdrop-blur-xl border border-zinc-800/50 rounded-3xl p-6 md:p-8 shadow-2xl relative overflow-hidden">
-        {/* Subtle inner glow */}
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-zinc-700 to-transparent opacity-50" />
-        
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-6 mt-4">
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
-              <Label htmlFor="first-name" className="text-zinc-300 text-xs uppercase tracking-wider font-semibold">First Name</Label>
+              <Label htmlFor="first-name" className="text-zinc-700 text-xs uppercase tracking-wider font-semibold">First Name</Label>
               <div className="relative group">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 group-focus-within:text-white transition-colors" />
-                <Input 
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+              <Input 
                   id="first-name" 
                   name="first-name"
                   placeholder="Max" 
-                  className="bg-zinc-900/50 border-zinc-800 text-zinc-100 pl-10 h-12 rounded-xl focus-visible:ring-zinc-600 focus-visible:border-zinc-600 placeholder:text-zinc-600 transition-all"
+                  className="bg-white border-zinc-200 text-zinc-900 pl-10 h-12 rounded-2xl focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all"
                   required 
                 />
               </div>
             </div>
             <div className="space-y-2">
-              <Label htmlFor="last-name" className="text-zinc-300 text-xs uppercase tracking-wider font-semibold">Last Name</Label>
+              <Label htmlFor="last-name" className="text-zinc-700 text-xs uppercase tracking-wider font-semibold">Last Name</Label>
               <div className="relative group">
-                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 group-focus-within:text-white transition-colors" />
+                <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
                 <Input 
                   id="last-name" 
                   name="last-name"
                   placeholder="Robinson" 
-                  className="bg-zinc-900/50 border-zinc-800 text-zinc-100 pl-10 h-12 rounded-xl focus-visible:ring-zinc-600 focus-visible:border-zinc-600 placeholder:text-zinc-600 transition-all"
+                  className="bg-white border-zinc-200 text-zinc-900 pl-10 h-12 rounded-2xl focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all"
                   required 
                 />
               </div>
@@ -98,36 +96,36 @@ export default function SignupPage() {
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="email" className="text-zinc-300 text-xs uppercase tracking-wider font-semibold">Email</Label>
+            <Label htmlFor="email" className="text-zinc-700 text-xs uppercase tracking-wider font-semibold">Email</Label>
             <div className="relative group">
-              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 group-focus-within:text-white transition-colors" />
+              <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
               <Input 
                 id="email" 
                 name="email"
                 type="email" 
                 placeholder="Enter your email here" 
-                className="bg-zinc-900/50 border-zinc-800 text-zinc-100 pl-10 h-12 rounded-xl focus-visible:ring-zinc-600 focus-visible:border-zinc-600 placeholder:text-zinc-600 transition-all"
+                className="bg-white border-zinc-200 text-zinc-900 pl-10 h-12 rounded-2xl focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all"
                 required 
               />
             </div>
           </div>
           
           <div className="space-y-2">
-            <Label htmlFor="password" className="text-zinc-300 text-xs uppercase tracking-wider font-semibold">Password</Label>
+            <Label htmlFor="password" className="text-zinc-700 text-xs uppercase tracking-wider font-semibold">Password</Label>
             <div className="relative group">
-              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 group-focus-within:text-white transition-colors" />
+              <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
               <Input 
                 id="password" 
                 name="password"
                 type={showPassword ? "text" : "password"} 
                 placeholder="••••••••" 
-                className="bg-zinc-900/50 border-zinc-800 text-zinc-100 pl-10 pr-10 h-12 rounded-xl focus-visible:ring-zinc-600 focus-visible:border-zinc-600 placeholder:text-zinc-600 transition-all"
+                className="bg-white border-zinc-200 text-zinc-900 pl-10 pr-10 h-12 rounded-2xl focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all"
                 required 
               />
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-white transition-colors"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-black transition-colors"
               >
                 {showPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
               </button>
@@ -143,22 +141,18 @@ export default function SignupPage() {
           <Button
             type="submit"
             disabled={isLoading}
-            className="w-full bg-white text-black hover:bg-zinc-200 h-12 rounded-full font-bold tracking-wide text-base shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all hover:shadow-[0_0_25px_rgba(255,255,255,0.2)]"
+            className="w-full bg-black text-white hover:bg-zinc-800 h-12 rounded-full font-bold tracking-wide text-base transition-all focus-visible:ring-0 focus-visible:outline-none border-0"
           >
-            {isLoading ? "Creating Account..." : "Create Account"}
+            {isLoading ? "Creando cuenta..." : "Crear cuenta"}
           </Button>
 
           <div className="text-center text-sm text-zinc-500">
-            Already have an account?{" "}
-            <Link href="/login" className="text-white font-medium hover:underline decoration-zinc-500 underline-offset-4">
-              Sign In
+            ¿Ya tienes cuenta?{" "}
+            <Link href="/login" className="text-black font-medium hover:underline underline-offset-4">
+              Ingresar
             </Link>
           </div>
         </form>
-      </div>
-
-      <div className="text-zinc-600 text-xs text-center">
-        Copyright © 2026 Vortex. All Rights Reserved.
       </div>
     </div>
   )
