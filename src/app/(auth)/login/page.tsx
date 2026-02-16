@@ -7,20 +7,34 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { supabase } from "@/lib/supabase"
 
 export default function LoginPage() {
   const router = useRouter()
   const [isLoading, setIsLoading] = useState(false)
   const [showPassword, setShowPassword] = useState(false)
+  const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
-    
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000))
-    
-    // Redirect to dashboard
+    setErrorMessage(null)
+
+    const formData = new FormData(e.currentTarget)
+    const email = String(formData.get("email") || "")
+    const password = String(formData.get("password") || "")
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    })
+
+    if (error) {
+      setErrorMessage(error.message)
+      setIsLoading(false)
+      return
+    }
+
     router.push("/dashboard")
   }
 
@@ -61,7 +75,8 @@ export default function LoginPage() {
             <div className="relative group">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 group-focus-within:text-white transition-colors" />
               <Input 
-                id="email" 
+                id="email"
+                name="email"
                 type="email" 
                 placeholder="Enter your email here" 
                 className="bg-zinc-900/50 border-zinc-800 text-zinc-100 pl-10 h-12 rounded-xl focus-visible:ring-zinc-600 focus-visible:border-zinc-600 placeholder:text-zinc-600 transition-all"
@@ -75,7 +90,8 @@ export default function LoginPage() {
             <div className="relative group">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500 group-focus-within:text-white transition-colors" />
               <Input 
-                id="password" 
+                id="password"
+                name="password"
                 type={showPassword ? "text" : "password"}
                 placeholder="••••••••" 
                 className="bg-zinc-900/50 border-zinc-800 text-zinc-100 pl-10 pr-10 h-12 rounded-xl focus-visible:ring-zinc-600 focus-visible:border-zinc-600 placeholder:text-zinc-600 transition-all"
@@ -95,6 +111,12 @@ export default function LoginPage() {
               </Link>
             </div>
           </div>
+
+          {errorMessage && (
+            <p className="text-xs text-red-400 text-center">
+              {errorMessage}
+            </p>
+          )}
 
           <Button 
             type="submit" 
