@@ -1,63 +1,67 @@
+"use client";
+
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { ArrowRight } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { DotPattern } from "@/components/ui/dot-pattern";
+import { Truck, MapPin, BarChart3, ShieldCheck } from "lucide-react";
+import { AsciiBackground } from "@/components/ui/ascii-background";
 
 export function Hero() {
   return (
-    <section className="relative flex min-h-screen flex-col justify-center items-center overflow-hidden pt-20">
-      {/* Background gradients and Patterns */}
-      <div className="absolute inset-0 -z-10 h-full w-full bg-white">
-        <DotPattern
-          width={20}
-          height={20}
-          cx={1}
-          cy={1}
-          cr={1.5}
-          className={cn(
-            "text-neutral-400 [mask-image:none]"
-          )}
-        />
-        <div className="absolute left-0 right-0 top-[-10%] m-auto h-[500px] w-[500px] rounded-full bg-gradient-to-tr from-indigo-500 via-purple-500 to-pink-500 opacity-20 blur-[100px] animate-blob" />
-        <div className="absolute right-[-10%] top-[20%] h-[300px] w-[300px] rounded-full bg-gradient-to-tr from-blue-400 via-cyan-400 to-teal-400 opacity-20 blur-[80px] animate-blob animation-delay-2000" />
-        <div className="absolute left-[-10%] bottom-[10%] h-[400px] w-[400px] rounded-full bg-gradient-to-tr from-amber-200 via-orange-300 to-yellow-200 opacity-20 blur-[90px] animate-blob animation-delay-4000" />
-      </div>
+    <section className="relative flex min-h-screen flex-col justify-center items-center overflow-hidden pt-20 bg-white text-black">
+      <AsciiBackground />
       
-      <div className="container mx-auto px-4 md:px-6 flex flex-col items-center text-center space-y-8">
+      <div className="container mx-auto px-4 md:px-6 flex flex-col items-center text-center space-y-12 relative z-10">
         
-        {/* Badge */}
-        <div className="relative inline-flex overflow-hidden rounded-full p-[1px]">
-          <span className="absolute inset-[-1000%] animate-[spin_2s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#e6f4ed_0%,#1d6e47_50%,#e6f4ed_100%)]" />
-          <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-white px-3 py-1 text-xs font-medium text-[#1d6e47] backdrop-blur-3xl">
-            Nuevo: Lanzamiento Oficial
-          </span>
+        {/* Monochromatic Logistics Badge */}
+        <div className="inline-flex items-center rounded-full border border-[#eeeeee] bg-white/50 px-4 py-1.5 text-xs font-medium text-[#666666] backdrop-blur-sm animate-in fade-in slide-in-from-top-4 duration-1000">
+          <Truck className="mr-2 h-3 w-3" />
+          <span className="tracking-widest uppercase">Logistics.Initialize(VORTEX_CORE)</span>
         </div>
 
-        {/* Main Heading */}
-        <h1 className="text-4xl font-bold tracking-tighter sm:text-6xl xl:text-7xl/none max-w-4xl bg-clip-text text-transparent bg-gradient-to-b from-neutral-900 to-neutral-500 dark:from-white dark:to-neutral-500">
-          La plataforma más potente para tu <span className="text-[#1d6e47]">Logística</span>
-        </h1>
-
-        {/* Subtitle */}
-        <p className="max-w-[800px] text-zinc-500 md:text-xl dark:text-zinc-400">
-          Gestiona, optimiza y monitorea toda tu operación en un solo lugar. 
-          Desbloquea el potencial de tu empresa con nuestra plataforma de siguiente nivel.
-        </p>
+        {/* Main Heading - Focused on Logistics Solution */}
+        <div className="space-y-4">
+          <h1 className="text-5xl font-bold tracking-tighter sm:text-7xl xl:text-8xl/none max-w-5xl">
+            <span className="text-black">Intelligent</span>{" "}
+            <span className="text-[#888888]">Logistics</span>
+          </h1>
+          <p className="max-w-[750px] mx-auto text-[#444444] md:text-xl font-medium tracking-tight leading-relaxed">
+            Solución integral de transporte y cadena de suministro. 
+            Vortex optimiza tu operación, resuelve cuellos de botella y 
+            conecta cada punto de tu logística con precisión absoluta.
+          </p>
+        </div>
         
-        {/* Buttons */}
-        <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center w-full">
-          <Link href="/dashboard">
-            <Button size="lg" className="gap-2 font-semibold px-8 h-12 text-base shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all duration-300">
-              Comenzar Ahora <ArrowRight className="h-4 w-4" />
+        {/* Action Buttons - Rounded Style with Unified Typography */}
+        <div className="flex flex-col gap-4 min-[400px]:flex-row justify-center w-full animate-in fade-in slide-in-from-bottom-4 duration-1000 delay-300">
+          <Link href="/signup">
+            <Button size="lg" className="bg-black text-white hover:bg-[#222222] rounded-full px-10 h-14 text-sm font-bold tracking-widest uppercase transition-all duration-300">
+              Comenzar Optimización
             </Button>
           </Link>
-          <Button size="lg" variant="outline" className="font-semibold px-8 h-12 text-base border-neutral-200 hover:bg-neutral-100 transition-all duration-300">
-            Más información <ArrowRight className="h-4 w-4 ml-1" />
+          <Button variant="outline" size="lg" className="border-[#dddddd] text-black hover:bg-black hover:text-white rounded-full px-10 h-14 text-sm font-bold tracking-widest uppercase transition-all duration-300">
+            Ver Soluciones
           </Button>
         </div>
 
+        {/* Logistics Solutions Motifs */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 w-full max-w-4xl pt-12 border-t border-[#eeeeee]">
+          {[
+            { icon: MapPin, label: "Tracking Real-Time", desc: "Visibilidad total de flota" },
+            { icon: BarChart3, label: "Analítica Predictiva", desc: "Optimización de rutas" },
+            { icon: ShieldCheck, label: "Gestión de Riesgos", desc: "Seguridad en cada entrega" }
+          ].map((item, i) => (
+            <div key={i} className="flex flex-col items-center space-y-2 opacity-60 hover:opacity-100 transition-opacity duration-500">
+              <item.icon className="h-5 w-5 text-black" />
+              <span className="text-xs font-bold uppercase tracking-widest text-black">{item.label}</span>
+              <span className="text-[10px] font-medium text-[#888888]">{item.desc}</span>
+            </div>
+          ))}
+        </div>
+
       </div>
+
+      {/* Subtle bottom gradient for depth */}
+      <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent pointer-events-none" />
     </section>
   );
 }
