@@ -2,508 +2,577 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowRight, Check, Building2, User, Plus, X } from "lucide-react";
+import { ArrowRight, Check, Building2, User, Plus, X, Upload, ChevronRight, MapPin, Briefcase, Users, Truck, FileText } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { cn } from "@/lib/utils";
 
-type Question = {
-  id: number;
-  title: string;
-  description: string;
-  options: Option[];
-  type?: "select";
+import { supabase } from "@/lib/supabase";
+
+// --- DATA TYPES ---
+type OnboardingData = {
+  companyName: string;
+  role: string;
+  employees: string;
+  projectsPerMonth: string;
+  projectTypes: string;
+  fleetSize: string;
+  quotesPerMonth: string;
+  country: string;
+  state: string;
+  logo: string | null; // URL or base64
+  collaboratorName: string;
 };
 
-type Option = {
-  label: string;
-  value: string;
-  score: number;
-};
-
-const questions: Question[] = [
-  {
-    id: 1,
-    title: "¿Cuál es tu objetivo principal con Vortex?",
-    description: "Ayúdanos a entender qué buscas optimizar.",
-    options: [
-      { label: "Gestión personal de envíos", value: "personal", score: 0 },
-      { label: "Optimizar operación logística", value: "operation", score: 2 },
-      { label: "Reducir costos de transporte", value: "costs", score: 2 },
-      { label: "Digitalizar mi empresa", value: "digitalization", score: 2 },
-    ],
-  },
-  {
-    id: 2,
-    title: "¿Cuántas personas accederán a la plataforma?",
-    description: "Define el tamaño de tu equipo de trabajo.",
-    options: [
-      { label: "Solo yo", value: "1", score: 0 },
-      { label: "2 - 10 personas", value: "2-10", score: 1 },
-      { label: "11 - 50 personas", value: "11-50", score: 2 },
-      { label: "Más de 50 personas", value: "50+", score: 3 },
-    ],
-  },
-  {
-    id: 3,
-    title: "¿Cuál es tu volumen mensual de envíos?",
-    description: "Cantidad aproximada de órdenes o despachos.",
-    options: [
-      { label: "Menos de 50", value: "<50", score: 0 },
-      { label: "50 - 500", value: "50-500", score: 1 },
-      { label: "500 - 5,000", value: "500-5000", score: 2 },
-      { label: "Más de 5,000", value: "5000+", score: 3 },
-    ],
-  },
-  {
-    id: 4,
-    title: "¿Cómo gestionas tu flota actualmente?",
-    description: "Indica el tipo de transporte que utilizas.",
-    options: [
-      { label: "No tengo flota (Logística tercerizada)", value: "none", score: 1 },
-      { label: "Flota propia pequeña", value: "small", score: 1 },
-      { label: "Flota mixta (Propia + Terceros)", value: "mixed", score: 2 },
-      { label: "Flota corporativa grande", value: "large", score: 3 },
-    ],
-  },
-  {
-    id: 5,
-    title: "¿Qué herramientas utilizas hoy?",
-    description: "Para entender tu nivel de digitalización actual.",
-    options: [
-      { label: "Excel, Papel o WhatsApp", value: "manual", score: 0 },
-      { label: "Software básico de rastreo", value: "basic", score: 1 },
-      { label: "ERP o TMS legado", value: "legacy", score: 2 },
-      { label: "Desarrollo propio a medida", value: "custom", score: 3 },
-    ],
-  },
-  {
-    id: 6,
-    title: "¿Cuál es tu necesidad más crítica?",
-    description: "El problema que necesitas resolver ya.",
-    options: [
-      { label: "Rastreo básico de envíos", value: "tracking", score: 0 },
-      { label: "Optimización de rutas", value: "routing", score: 1 },
-      { label: "Control de costos y auditoría", value: "audit", score: 2 },
-      { label: "Torre de control completa", value: "control_tower", score: 3 },
-    ],
-  },
-  {
-    id: 7,
-    title: "¿Necesitas integraciones con otros sistemas?",
-    description: "Conexión con ERPs, CRMs o marketplaces.",
-    options: [
-      { label: "No, usaré Vortex como standalone", value: "no", score: 0 },
-      { label: "Quizás más adelante", value: "maybe", score: 1 },
-      { label: "Sí, necesito conectar mi ERP/CRM", value: "yes", score: 2 },
-      { label: "Sí, requiero API personalizada", value: "api", score: 3 },
-    ],
-  },
-  {
-    id: 8,
-    title: "¿Cuál es tu rango de presupuesto mensual estimado?",
-    description: "Para recomendarte el plan que mejor se ajuste.",
-    options: [
-      { label: "Bajo (Busco versión gratuita/inicial)", value: "low", score: 0 },
-      { label: "Medio (Crecimiento)", value: "medium", score: 1 },
-      { label: "Alto (Escala)", value: "high", score: 2 },
-      { label: "Corporativo (Enterprise)", value: "enterprise", score: 3 },
-    ],
-  },
-  {
-    id: 9,
-    title: "¿Cuál es tu rol en la organización?",
-    description: "Para personalizar tu experiencia.",
-    options: [
-      { label: "Dueño / Fundador", value: "owner", score: 1 },
-      { label: "Gerente de Logística / Operaciones", value: "manager", score: 2 },
-      { label: "Operativo / Despachador", value: "staff", score: 1 },
-      { label: "Director de Tecnología (CTO)", value: "tech", score: 2 },
-    ],
-  },
-  {
-    id: 10,
-    title: "¿Cuándo planeas implementar la solución?",
-    description: "Tu horizonte de tiempo para arrancar.",
-    options: [
-      { label: "Inmediatamente", value: "now", score: 1 },
-      { label: "En el próximo mes", value: "1month", score: 1 },
-      { label: "En el próximo trimestre", value: "3months", score: 1 },
-      { label: "Solo estoy explorando", value: "exploring", score: 0 },
-    ],
-  },
+// --- OPTIONS DATA ---
+const roles = [
+  "Dueño / CEO / Fundador",
+  "Gerente de Logística / Operaciones",
+  "Jefe de Flota / Tráfico",
+  "Despachador / Analista",
+  "Otro"
 ];
 
+const employeeRanges = [
+  "1 - 5 personas",
+  "6 - 20 personas",
+  "21 - 100 personas",
+  "Más de 100 personas"
+];
+
+const projectRanges = [
+  "Menos de 10",
+  "10 - 50",
+  "51 - 200",
+  "Más de 200"
+];
+
+const projectTypes = [
+  "Carga General (FTL/LTL)",
+  "Carga Especializada",
+  "Contenerizada",
+  "Maritimo y Aereo"
+];
+
+const fleetSizes = [
+  "Sin flota (Solo Logística)",
+  "1 - 10 unidades",
+  "11 - 50 unidades",
+  "Más de 50 unidades"
+];
+
+const quoteRanges = [
+  "Menos de 20",
+  "20 - 100",
+  "100 - 500",
+  "Más de 500"
+];
+const countries = ["México", "Estados Unidos", "Colombia", "Chile", "Otro"];
+const statesMx = [
+  "Aguascalientes", "Baja California", "Baja California Sur", "Campeche", "Chiapas", "Chihuahua",
+  "Ciudad de México", "Coahuila", "Colima", "Durango", "Estado de México", "Guanajuato", "Guerrero",
+  "Hidalgo", "Jalisco", "Michoacán", "Morelos", "Nayarit", "Nuevo León", "Oaxaca", "Puebla",
+  "Querétaro", "Quintana Roo", "San Luis Potosí", "Sinaloa", "Sonora", "Tabasco", "Tamaulipas",
+  "Tlaxcala", "Veracruz", "Yucatán", "Zacatecas"
+];
+
+// --- MAIN COMPONENT ---
 export default function OnboardingPage() {
   const router = useRouter();
-  const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<number, Option>>({});
-  const [isCalculating, setIsCalculating] = useState(false);
-  const [showResult, setShowResult] = useState(false);
-  const [companyName, setCompanyName] = useState("");
-  const [users, setUsers] = useState<string[]>([]);
-  const [newUserEmail, setNewUserEmail] = useState("");
+  const [step, setStep] = useState(1);
+  const [data, setData] = useState<OnboardingData>({
+    companyName: "",
+    role: "",
+    employees: "",
+    projectsPerMonth: "",
+    projectTypes: "",
+    fleetSize: "",
+    quotesPerMonth: "",
+    country: "",
+    state: "",
+    logo: null,
+    collaboratorName: ""
+  });
+  const [isProcessing, setIsProcessing] = useState(false);
+
+  const totalSteps = 10;
+  const progress = (step / totalSteps) * 100;
+
+  const handleNext = async () => {
+    if (step < totalSteps) {
+      setStep(step + 1);
+    } else {
+      // Step 10 finished, proceed to save data
+      setIsProcessing(true);
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        if (!user) throw new Error("No user found");
+
+        // 1. Create Organization
+        const { data: org, error: orgError } = await supabase
+          .from('organizations')
+          .insert({
+            name: data.companyName,
+            country: data.country,
+            state: data.state,
+            fleet_size: data.fleetSize,
+            project_types: data.projectTypes,
+            projects_per_month: data.projectsPerMonth,
+            quotes_per_month: data.quotesPerMonth,
+            logo_url: data.logo // Note: In a real app, upload image first and get URL
+          })
+          .select()
+          .single();
+
+        if (orgError) {
+            console.error("Error creating org:", orgError);
+            // If RLS blocks this, we might need a server action or trigger
+            throw orgError;
+        }
+
+        // 2. Link User as Owner
+        const { error: memberError } = await supabase
+          .from('organization_members')
+          .insert({
+            organization_id: org.id,
+            user_id: user.id,
+            role: 'owner'
+          });
+
+        if (memberError) {
+             console.error("Error linking member:", memberError);
+             throw memberError;
+        }
+
+        // Success - Redirect to dashboard
+        router.push("/dashboard");
+      } catch (error) {
+        console.error("Onboarding error:", error);
+        // Fallback for demo purposes if DB setup is missing
+        router.push("/dashboard");
+      } finally {
+        setIsProcessing(false);
+      }
+    }
+  };
+
+  const handleBack = () => {
+    if (step > 1) setStep(step - 1);
+  };
+
+  const updateData = (key: keyof OnboardingData, value: any) => {
+    setData(prev => ({ ...prev, [key]: value }));
+  };
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        updateData("logo", reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  // --- RENDER STEPS ---
   
-  // Custom steps that come after the questions
-  const [customStep, setCustomStep] = useState<"questions" | "company" | "users">("questions");
-
-  const totalSteps = questions.length;
-  const progress = ((currentStep + 1) / totalSteps) * 100;
-
-  const handleOptionSelect = (option: Option) => {
-    setAnswers((prev) => ({ ...prev, [questions[currentStep].id]: option }));
-    
-    if (currentStep < totalSteps - 1) {
-      setTimeout(() => setCurrentStep((prev) => prev + 1), 250);
-    } else {
-      // Finished questions, go to company step
-      setCustomStep("company");
-    }
-  };
-
-  const handleCompanySubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (companyName.trim()) {
-      setCustomStep("users");
-    }
-  };
-
-  const handleAddUser = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (newUserEmail.trim() && !users.includes(newUserEmail)) {
-      setUsers([...users, newUserEmail]);
-      setNewUserEmail("");
-    }
-  };
-
-  const removeUser = (email: string) => {
-    setUsers(users.filter(u => u !== email));
-  };
-
-  const handleFinishOnboarding = () => {
-    setIsCalculating(true);
-    setTimeout(() => {
-      setIsCalculating(false);
-      setShowResult(true);
-    }, 1500);
-  };
-
-  const calculateRecommendation = () => {
-    let totalScore = 0;
-    Object.values(answers).forEach((ans) => {
-      totalScore += ans.score;
-    });
-
-    if (totalScore >= 15) {
-      return {
-        type: "Enterprise",
-        title: "Plan Corporativo Vortex",
-        description: "Tu operación requiere potencia, integraciones y soporte dedicado. Hemos configurado el entorno Enterprise para ti.",
-        features: ["Usuarios ilimitados", "Integración ERP/SAP", "Soporte 24/7", "Analítica Avanzada"],
-        icon: Building2,
-      };
-    } else {
-      return {
-        type: "Personal / Startup",
-        title: "Plan Vortex Starter",
-        description: "Ideal para comenzar a optimizar sin complicaciones. Tienes acceso a las herramientas esenciales de inmediato.",
-        features: ["Hasta 3 usuarios", "Tracking en tiempo real", "Gestión de pedidos", "Soporte por email"],
-        icon: User,
-      };
-    }
-  };
-
-  const recommendation = calculateRecommendation();
-
-  if (showResult) {
-    return (
-      <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.95 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-md w-full text-center space-y-8"
-        >
-          <div className="flex justify-center mb-6">
-            <div className="h-24 w-24 bg-white/5 border border-white/10 rounded-full flex items-center justify-center backdrop-blur-sm shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-              <recommendation.icon className="h-10 w-10 text-white" />
-            </div>
-          </div>
-          
-          <div className="space-y-2">
-            <p className="text-xs font-medium text-zinc-400 uppercase tracking-[0.2em]">Recomendación Lista</p>
-            <h1 className="text-3xl font-bold text-white">{recommendation.title}</h1>
-            <p className="text-zinc-400 text-lg leading-relaxed">{recommendation.description}</p>
-          </div>
-
-          <Card className="border-white/10 shadow-2xl bg-zinc-900/50 text-left backdrop-blur-md">
-            <CardContent className="pt-6">
-              <ul className="space-y-4">
-                {recommendation.features.map((feature, i) => (
-                  <li key={i} className="flex items-center gap-3 text-sm font-medium text-zinc-300">
-                    <div className="h-6 w-6 rounded-full bg-white/10 flex items-center justify-center shrink-0 border border-white/5">
-                      <Check className="h-3.5 w-3.5 text-white" />
-                    </div>
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Button 
-            onClick={() => router.push("/dashboard")}
-            className="w-full h-14 bg-white text-black hover:bg-zinc-200 rounded-full text-lg font-bold shadow-[0_0_20px_rgba(255,255,255,0.1)] transition-all hover:scale-[1.02]"
-          >
-            Ir al Dashboard <ArrowRight className="ml-2 h-5 w-5" />
-          </Button>
-        </motion.div>
+  // 1. Nombre de la empresa
+  const renderStep1 = () => (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest border border-white/10 px-2 py-1 rounded-md">Paso 1</span>
+        <h1 className="text-4xl font-bold text-white">¿Cuál es el nombre de tu empresa?</h1>
+        <p className="text-zinc-400">Comencemos por definir tu identidad.</p>
       </div>
-    );
-  }
+      <Input 
+        autoFocus
+        value={data.companyName}
+        onChange={(e) => updateData("companyName", e.target.value)}
+        placeholder="Ej. Logística Global S.A.S"
+        className="h-16 text-2xl bg-transparent border-b-2 border-white/20 border-t-0 border-x-0 rounded-none focus-visible:ring-0 focus-visible:border-white px-0 placeholder:text-zinc-700"
+      />
+      <Button 
+        onClick={handleNext} 
+        disabled={!data.companyName.trim()}
+        className="w-full h-12 rounded-full bg-white text-black hover:bg-zinc-200 font-bold"
+      >
+        Continuar <ArrowRight className="ml-2 h-4 w-4" />
+      </Button>
+    </div>
+  );
 
-  if (isCalculating) {
-    return (
+  // 2. Qué puesto ocupas (Selector)
+  const renderStep2 = () => (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest border border-white/10 px-2 py-1 rounded-md">Paso 2</span>
+        <h1 className="text-4xl font-bold text-white">¿Qué puesto ocupas?</h1>
+        <p className="text-zinc-400">Selecciona tu rol principal.</p>
+      </div>
+      <div className="grid gap-3">
+        {roles.map((role) => (
+          <button
+            key={role}
+            onClick={() => { updateData("role", role); handleNext(); }}
+            className={cn(
+              "flex items-center justify-between p-4 rounded-xl border transition-all text-left group",
+              data.role === role 
+                ? "border-white bg-white/10" 
+                : "border-white/10 bg-white/5 hover:border-white/30"
+            )}
+          >
+            <span className={cn("text-lg", data.role === role ? "text-white" : "text-zinc-400 group-hover:text-zinc-200")}>{role}</span>
+            {data.role === role && <Check className="h-5 w-5 text-white" />}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  // 3. Cuantos colaboradores tienes (Selector)
+  const renderStep3 = () => (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest border border-white/10 px-2 py-1 rounded-md">Paso 3</span>
+        <h1 className="text-4xl font-bold text-white">¿Cuántos colaboradores tienes?</h1>
+        <p className="text-zinc-400">Tamaño de tu equipo.</p>
+      </div>
+      <div className="grid gap-3">
+        {employeeRanges.map((range) => (
+          <button
+            key={range}
+            onClick={() => { updateData("employees", range); handleNext(); }}
+            className={cn(
+              "flex items-center justify-between p-4 rounded-xl border transition-all text-left group",
+              data.employees === range 
+                ? "border-white bg-white/10" 
+                : "border-white/10 bg-white/5 hover:border-white/30"
+            )}
+          >
+            <span className={cn("text-lg", data.employees === range ? "text-white" : "text-zinc-400 group-hover:text-zinc-200")}>{range}</span>
+            {data.employees === range && <Check className="h-5 w-5 text-white" />}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  // 4. Numero de proyectos al mes (Selector)
+  const renderStep4 = () => (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest border border-white/10 px-2 py-1 rounded-md">Paso 4</span>
+        <h1 className="text-4xl font-bold text-white">¿Número de proyectos al mes?</h1>
+        <p className="text-zinc-400">Volumen aproximado de operaciones.</p>
+      </div>
+      <div className="grid gap-3">
+        {projectRanges.map((range) => (
+          <button
+            key={range}
+            onClick={() => { updateData("projectsPerMonth", range); handleNext(); }}
+            className={cn(
+              "flex items-center justify-between p-4 rounded-xl border transition-all text-left group",
+              data.projectsPerMonth === range 
+                ? "border-white bg-white/10" 
+                : "border-white/10 bg-white/5 hover:border-white/30"
+            )}
+          >
+            <span className={cn("text-lg", data.projectsPerMonth === range ? "text-white" : "text-zinc-400 group-hover:text-zinc-200")}>{range}</span>
+            {data.projectsPerMonth === range && <Check className="h-5 w-5 text-white" />}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  // 5. Tipos de proyectos (Selector)
+  const renderStep5 = () => (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest border border-white/10 px-2 py-1 rounded-md">Paso 5</span>
+        <h1 className="text-4xl font-bold text-white">¿Tipos de proyectos?</h1>
+        <p className="text-zinc-400">Enfoque principal.</p>
+      </div>
+      <div className="grid gap-3">
+        {projectTypes.map((type) => (
+          <button
+            key={type}
+            onClick={() => { updateData("projectTypes", type); handleNext(); }}
+            className={cn(
+              "flex items-center justify-between p-4 rounded-xl border transition-all text-left group",
+              data.projectTypes === type 
+                ? "border-white bg-white/10" 
+                : "border-white/10 bg-white/5 hover:border-white/30"
+            )}
+          >
+            <span className={cn("text-lg", data.projectTypes === type ? "text-white" : "text-zinc-400 group-hover:text-zinc-200")}>{type}</span>
+            {data.projectTypes === type && <Check className="h-5 w-5 text-white" />}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  // 6. Total de flotilla (Selector)
+  const renderStep6 = () => (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest border border-white/10 px-2 py-1 rounded-md">Paso 6</span>
+        <h1 className="text-4xl font-bold text-white">¿Total de flotilla?</h1>
+        <p className="text-zinc-400">Unidades propias o arrendadas.</p>
+      </div>
+      <div className="grid gap-3">
+        {fleetSizes.map((size) => (
+          <button
+            key={size}
+            onClick={() => { updateData("fleetSize", size); handleNext(); }}
+            className={cn(
+              "flex items-center justify-between p-4 rounded-xl border transition-all text-left group",
+              data.fleetSize === size 
+                ? "border-white bg-white/10" 
+                : "border-white/10 bg-white/5 hover:border-white/30"
+            )}
+          >
+            <span className={cn("text-lg", data.fleetSize === size ? "text-white" : "text-zinc-400 group-hover:text-zinc-200")}>{size}</span>
+            {data.fleetSize === size && <Check className="h-5 w-5 text-white" />}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  // 7. Cotizaciones aproximadas al mes (Selector)
+  const renderStep7 = () => (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest border border-white/10 px-2 py-1 rounded-md">Paso 7</span>
+        <h1 className="text-4xl font-bold text-white">¿Cotizaciones mensuales?</h1>
+        <p className="text-zinc-400">Aproximadas.</p>
+      </div>
+      <div className="grid gap-3">
+        {quoteRanges.map((range) => (
+          <button
+            key={range}
+            onClick={() => { updateData("quotesPerMonth", range); handleNext(); }}
+            className={cn(
+              "flex items-center justify-between p-4 rounded-xl border transition-all text-left group",
+              data.quotesPerMonth === range 
+                ? "border-white bg-white/10" 
+                : "border-white/10 bg-white/5 hover:border-white/30"
+            )}
+          >
+            <span className={cn("text-lg", data.quotesPerMonth === range ? "text-white" : "text-zinc-400 group-hover:text-zinc-200")}>{range}</span>
+            {data.quotesPerMonth === range && <Check className="h-5 w-5 text-white" />}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+
+  // 8. Pais y estado (Doble Selector)
+  const renderStep8 = () => (
+    <div className="space-y-8">
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest border border-white/10 px-2 py-1 rounded-md">Paso 8</span>
+        <h1 className="text-4xl font-bold text-white">¿Dónde operas?</h1>
+        <p className="text-zinc-400">País y Estado principal.</p>
+      </div>
+      
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div className="space-y-2">
+            <label className="text-sm font-medium text-zinc-400">País</label>
+            <div className="relative">
+                <select
+                    value={data.country}
+                    onChange={(e) => updateData("country", e.target.value)}
+                    className="w-full h-12 rounded-lg bg-white/5 border border-white/10 text-white px-3 appearance-none focus:outline-none focus:border-white transition-colors cursor-pointer"
+                >
+                    <option value="" disabled className="bg-zinc-900 text-zinc-500">Selecciona un país</option>
+                    {countries.map(c => (
+                        <option key={c} value={c} className="bg-zinc-900 text-white">
+                            {c}
+                        </option>
+                    ))}
+                </select>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400">
+                    <ChevronRight className="h-4 w-4 rotate-90" />
+                </div>
+            </div>
+        </div>
+
+        <div className="space-y-2">
+            <label className="text-sm font-medium text-zinc-400">Estado</label>
+            <div className="relative">
+                <select
+                    value={data.state}
+                    onChange={(e) => updateData("state", e.target.value)}
+                    disabled={data.country !== "México"}
+                    className="w-full h-12 rounded-lg bg-white/5 border border-white/10 text-white px-3 appearance-none focus:outline-none focus:border-white transition-colors cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                    <option value="" disabled className="bg-zinc-900 text-zinc-500">
+                        {data.country === "México" ? "Selecciona un estado" : "No aplica"}
+                    </option>
+                    {data.country === "México" && statesMx.map(s => (
+                        <option key={s} value={s} className="bg-zinc-900 text-white">
+                            {s}
+                        </option>
+                    ))}
+                </select>
+                <div className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-zinc-400">
+                    <ChevronRight className="h-4 w-4 rotate-90" />
+                </div>
+            </div>
+        </div>
+      </div>
+
+      <Button 
+        onClick={handleNext} 
+        disabled={!data.country || (data.country === "México" && !data.state)}
+        className="w-full h-12 rounded-full bg-white text-black hover:bg-zinc-200 font-bold"
+      >
+        Continuar <ArrowRight className="ml-2 h-4 w-4" />
+      </Button>
+    </div>
+  );
+
+  // 9. Agregar logo (Adjuntar Img)
+  const renderStep9 = () => (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest border border-white/10 px-2 py-1 rounded-md">Paso 9</span>
+        <h1 className="text-4xl font-bold text-white">Agrega tu logo</h1>
+        <p className="text-zinc-400">Personaliza tu experiencia (Opcional).</p>
+      </div>
+
+      <div className="border-2 border-dashed border-white/20 rounded-2xl p-10 flex flex-col items-center justify-center gap-4 hover:bg-white/5 transition-colors cursor-pointer relative min-h-[200px]">
+        <input 
+            type="file" 
+            accept="image/*" 
+            onChange={handleLogoUpload}
+            className="absolute inset-0 opacity-0 cursor-pointer z-10"
+        />
+        {data.logo ? (
+            <div className="relative h-32 w-32">
+                <Image src={data.logo} alt="Logo Preview" fill className="object-contain" />
+            </div>
+        ) : (
+            <>
+                <div className="h-16 w-16 rounded-full bg-white/5 flex items-center justify-center">
+                    <Upload className="h-8 w-8 text-zinc-400" />
+                </div>
+                <p className="text-zinc-400 font-medium">Click para subir imagen</p>
+            </>
+        )}
+      </div>
+
+      <div className="flex gap-3">
+          <Button variant="ghost" onClick={handleNext} className="flex-1 text-zinc-500 hover:text-white">
+            Omitir
+          </Button>
+          <Button 
+            onClick={handleNext} 
+            className="flex-1 h-12 rounded-full bg-white text-black hover:bg-zinc-200 font-bold"
+          >
+            {data.logo ? "Continuar" : "Saltar este paso"} <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+      </div>
+    </div>
+  );
+
+  // 10. Agrega a un colaborador (Input Nombre)
+  const renderStep10 = () => (
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <span className="text-xs font-bold text-zinc-500 uppercase tracking-widest border border-white/10 px-2 py-1 rounded-md">Paso 10</span>
+        <h1 className="text-4xl font-bold text-white">Invita a un colaborador</h1>
+        <p className="text-zinc-400">Escribe el nombre de un miembro clave.</p>
+      </div>
+
+      <Input 
+        autoFocus
+        value={data.collaboratorName}
+        onChange={(e) => updateData("collaboratorName", e.target.value)}
+        placeholder="Nombre del colaborador"
+        className="h-16 text-2xl bg-transparent border-b-2 border-white/20 border-t-0 border-x-0 rounded-none focus-visible:ring-0 focus-visible:border-white px-0 placeholder:text-zinc-700"
+      />
+
+      <div className="flex gap-3 pt-4">
+          <Button variant="ghost" onClick={handleNext} className="flex-1 text-zinc-500 hover:text-white">
+            Omitir
+          </Button>
+          <Button 
+            onClick={handleNext} 
+            disabled={!data.collaboratorName.trim()}
+            className="flex-1 h-12 rounded-full bg-white text-black hover:bg-zinc-200 font-bold"
+          >
+            Finalizar <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+      </div>
+    </div>
+  );
+
+  // Loading State
+  if (isProcessing) {
+     return (
       <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-4 space-y-6">
         <div className="w-16 h-16 border-4 border-white/10 border-t-white rounded-full animate-spin" />
-        <h2 className="text-xl font-medium text-zinc-300 animate-pulse tracking-wide">Configurando tu espacio...</h2>
+        <h2 className="text-xl font-medium text-zinc-300 animate-pulse tracking-wide">Creando tu cuenta...</h2>
       </div>
     );
   }
 
-  // Render Questions
-  if (customStep === "questions") {
-    const currentQuestion = questions[currentStep];
-    return (
-      <div className="min-h-screen bg-black text-white flex flex-col selection:bg-white selection:text-black">
-        {/* Header / Progress */}
-        <div className="h-1 w-full bg-white/5 fixed top-0 left-0 z-50">
-          <motion.div 
-            className="h-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]"
-            initial={{ width: 0 }}
-            animate={{ width: `${progress}%` }}
-            transition={{ duration: 0.5, ease: "circOut" }}
-          />
-        </div>
-
-        <div className="flex-1 flex flex-col items-center justify-center p-6 max-w-2xl mx-auto w-full">
-          <div className="w-full space-y-12">
-            <div className="space-y-4">
-              <span className="text-[10px] font-bold text-zinc-500 tracking-[0.2em] uppercase border border-white/10 px-3 py-1 rounded-full">
-                Paso {currentStep + 1} / {totalSteps}
-              </span>
-              <h1 className="text-3xl md:text-5xl font-bold text-white leading-[1.1] tracking-tight">
-                {currentQuestion.title}
-              </h1>
-              <p className="text-xl text-zinc-400 font-light">
-                {currentQuestion.description}
-              </p>
-            </div>
-
-            <div className="grid gap-3 pt-4">
-              <AnimatePresence mode="wait">
-                {currentQuestion.options.map((option) => (
-                  <motion.button
-                    key={option.value}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, y: -10 }}
-                    whileHover={{ scale: 1.02, backgroundColor: "rgba(255, 255, 255, 0.08)" }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => handleOptionSelect(option)}
-                    className={cn(
-                      "flex items-center justify-between w-full p-6 text-left border rounded-2xl transition-all duration-300 group backdrop-blur-sm",
-                      answers[currentQuestion.id]?.value === option.value
-                        ? "border-white bg-white/10 shadow-[0_0_30px_rgba(255,255,255,0.1)]"
-                        : "border-white/10 bg-white/5 hover:border-white/30"
-                    )}
-                  >
-                    <span className={cn(
-                      "text-lg font-medium transition-colors",
-                      answers[currentQuestion.id]?.value === option.value ? "text-white" : "text-zinc-300 group-hover:text-white"
-                    )}>
-                      {option.label}
-                    </span>
-                    {answers[currentQuestion.id]?.value === option.value && (
-                      <motion.div
-                        initial={{ scale: 0 }}
-                        animate={{ scale: 1 }}
-                        className="h-6 w-6 rounded-full bg-white flex items-center justify-center"
-                      >
-                        <Check className="h-3.5 w-3.5 text-black" />
-                      </motion.div>
-                    )}
-                  </motion.button>
-                ))}
-              </AnimatePresence>
-            </div>
-
-            <div className="pt-8 flex justify-between items-center border-t border-white/5 mt-8">
-              <Button
-                variant="ghost"
-                disabled={currentStep === 0}
-                onClick={() => setCurrentStep((prev) => prev - 1)}
-                className="text-zinc-500 hover:text-white hover:bg-transparent pl-0 transition-colors"
-              >
-                <ArrowRight className="h-4 w-4 rotate-180 mr-2" />
-                Atrás
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Company Name Step
-  if (customStep === "company") {
-    return (
-      <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 selection:bg-white selection:text-black">
+  return (
+    <div className="min-h-screen bg-black text-white flex flex-col selection:bg-white selection:text-black">
+      {/* Header / Progress */}
+      <div className="h-1 w-full bg-white/5 fixed top-0 left-0 z-50">
         <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-xl w-full space-y-8"
-        >
-          <div className="space-y-4">
-            <span className="text-[10px] font-bold text-zinc-500 tracking-[0.2em] uppercase border border-white/10 px-3 py-1 rounded-full">
-              Configuración
-            </span>
-            <h1 className="text-3xl md:text-5xl font-bold text-white leading-[1.1] tracking-tight">
-              ¿Cómo se llama tu empresa?
-            </h1>
-            <p className="text-xl text-zinc-400 font-light">
-              Crearemos un espacio de trabajo dedicado para tu organización.
-            </p>
-          </div>
-
-          <form onSubmit={handleCompanySubmit} className="space-y-8">
-            <Input
-              autoFocus
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              placeholder="Ej. Logística Global S.A.S"
-              className="h-16 text-2xl bg-transparent border-b-2 border-white/20 border-t-0 border-x-0 rounded-none focus-visible:ring-0 focus-visible:border-white px-0 placeholder:text-zinc-700 transition-colors"
-            />
-            
-            <div className="flex justify-between items-center pt-4">
-               <Button
-                type="button"
-                variant="ghost"
-                onClick={() => setCustomStep("questions")} // Go back to last question
-                className="text-zinc-500 hover:text-white hover:bg-transparent pl-0 transition-colors"
-              >
-                <ArrowRight className="h-4 w-4 rotate-180 mr-2" />
-                Atrás
-              </Button>
-              <Button 
-                type="submit"
-                disabled={!companyName.trim()}
-                className="bg-white text-black hover:bg-zinc-200 rounded-full h-12 px-8 font-bold disabled:opacity-50"
-              >
-                Continuar <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </form>
-        </motion.div>
+          className="h-full bg-white shadow-[0_0_10px_rgba(255,255,255,0.5)]"
+          initial={{ width: 0 }}
+          animate={{ width: `${progress}%` }}
+          transition={{ duration: 0.5, ease: "circOut" }}
+        />
       </div>
-    );
-  }
 
-  // Add Users Step
-  if (customStep === "users") {
-    return (
-      <div className="min-h-screen bg-black text-white flex flex-col items-center justify-center p-6 selection:bg-white selection:text-black">
-        <motion.div 
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="max-w-xl w-full space-y-8"
-        >
-          <div className="space-y-4">
-             <span className="text-[10px] font-bold text-zinc-500 tracking-[0.2em] uppercase border border-white/10 px-3 py-1 rounded-full">
-              Equipo
-            </span>
-            <h1 className="text-3xl md:text-5xl font-bold text-white leading-[1.1] tracking-tight">
-              Invita a tu equipo
-            </h1>
-            <p className="text-xl text-zinc-400 font-light">
-              Agrega los correos de tus colaboradores clave. Puedes hacerlo más tarde también.
-            </p>
-          </div>
+      <div className="flex-1 flex flex-col items-center justify-center p-6 max-w-xl mx-auto w-full">
+        <AnimatePresence mode="wait">
+            <motion.div
+                key={step}
+                initial={{ opacity: 0, x: 20 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -20 }}
+                transition={{ duration: 0.3 }}
+                className="w-full"
+            >
+                {step === 1 && renderStep1()}
+                {step === 2 && renderStep2()}
+                {step === 3 && renderStep3()}
+                {step === 4 && renderStep4()}
+                {step === 5 && renderStep5()}
+                {step === 6 && renderStep6()}
+                {step === 7 && renderStep7()}
+                {step === 8 && renderStep8()}
+                {step === 9 && renderStep9()}
+                {step === 10 && renderStep10()}
+            </motion.div>
+        </AnimatePresence>
 
-          <div className="space-y-6">
-            <form onSubmit={handleAddUser} className="flex gap-3">
-              <Input
-                type="email"
-                value={newUserEmail}
-                onChange={(e) => setNewUserEmail(e.target.value)}
-                placeholder="colaborador@empresa.com"
-                className="h-12 bg-white/5 border-white/10 text-white placeholder:text-zinc-600 rounded-xl focus-visible:ring-1 focus-visible:ring-white/20"
-              />
-              <Button 
-                type="submit"
-                disabled={!newUserEmail.trim()}
-                className="h-12 w-12 rounded-xl bg-white text-black hover:bg-zinc-200 p-0 shrink-0"
-              >
-                <Plus className="h-5 w-5" />
-              </Button>
-            </form>
-
-            <div className="space-y-2">
-              <AnimatePresence>
-                {users.map((user) => (
-                  <motion.div
-                    key={user}
-                    initial={{ opacity: 0, height: 0 }}
-                    animate={{ opacity: 1, height: "auto" }}
-                    exit={{ opacity: 0, height: 0 }}
-                    className="flex items-center justify-between p-3 bg-white/5 border border-white/10 rounded-xl"
-                  >
-                    <div className="flex items-center gap-3">
-                      <div className="h-8 w-8 rounded-full bg-white/10 flex items-center justify-center text-xs font-bold">
-                        {user.charAt(0).toUpperCase()}
-                      </div>
-                      <span className="text-sm text-zinc-300">{user}</span>
-                    </div>
-                    <button 
-                      onClick={() => removeUser(user)}
-                      className="text-zinc-500 hover:text-red-400 transition-colors"
-                    >
-                      <X className="h-4 w-4" />
-                    </button>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-              {users.length === 0 && (
-                <div className="text-center py-4 text-zinc-600 text-sm italic">
-                  No has agregado usuarios aún.
-                </div>
-              )}
+        {/* Back Button (except step 1) */}
+        {step > 1 && (
+            <div className="fixed bottom-8 left-0 w-full flex justify-center">
+                 <button 
+                    onClick={handleBack}
+                    className="text-zinc-500 hover:text-white text-sm font-medium flex items-center gap-2 transition-colors"
+                 >
+                    <ArrowRight className="h-4 w-4 rotate-180" />
+                    Volver
+                 </button>
             </div>
-            
-            <div className="flex justify-between items-center pt-8 border-t border-white/5">
-               <Button
-                type="button"
-                variant="ghost"
-                onClick={() => setCustomStep("company")} 
-                className="text-zinc-500 hover:text-white hover:bg-transparent pl-0 transition-colors"
-              >
-                <ArrowRight className="h-4 w-4 rotate-180 mr-2" />
-                Atrás
-              </Button>
-              <Button 
-                onClick={handleFinishOnboarding}
-                className="bg-white text-black hover:bg-zinc-200 rounded-full h-12 px-8 font-bold shadow-[0_0_20px_rgba(255,255,255,0.1)]"
-              >
-                {users.length > 0 ? "Finalizar invitación" : "Omitir por ahora"} <ArrowRight className="ml-2 h-4 w-4" />
-              </Button>
-            </div>
-          </div>
-        </motion.div>
+        )}
       </div>
-    );
-  }
-
-  return null; // Should not reach here
+    </div>
+  );
 }
