@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle2, HelpCircle, User, ChevronDown, Slash, Building2 } from "lucide-react";
+import { Bell, User, ChevronDown, Slash, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
@@ -111,26 +111,20 @@ export function Topbar() {
       </div>
 
       <div className="flex items-center gap-2">
-        <div className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-emerald-600 bg-emerald-50 rounded-full mr-2">
-          <CheckCircle2 className="h-3.5 w-3.5" />
-          <span>All OK</span>
+        <div className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-blue-600 bg-blue-50 rounded-full mr-2">
+          <span>Free</span>
         </div>
 
         <Button
           variant="ghost"
           size="icon"
-          className="h-8 w-8 text-muted-foreground hover:text-foreground"
+          className="h-8 w-8 text-muted-foreground hover:text-foreground relative"
         >
-          <HelpCircle className="h-4 w-4" />
+          <Bell className="h-4 w-4" />
+          <span className="absolute top-2 right-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white"></span>
         </Button>
 
-        <Button
-          size="sm"
-          variant="secondary"
-          className="h-8 text-xs font-medium bg-zinc-900 text-white hover:bg-zinc-800 dark:bg-zinc-50 dark:text-zinc-900 dark:hover:bg-zinc-200"
-        >
-          Upgrade
-        </Button>
+
 
         <div className="relative ml-1">
           <button
