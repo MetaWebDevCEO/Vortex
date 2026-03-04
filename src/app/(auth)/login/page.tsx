@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Eye, EyeOff, Lock, Mail } from "lucide-react"
@@ -16,6 +16,52 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false)
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
+  // Helper function to check/ensure organization
+  const ensureOrgAndRedirect = async (userId: string, userMetadata: any) => {
+    try {
+        const { data: membership } = await supabase
+            .from('organization_members')
+            .select('id')
+            .eq('user_id', userId)
+            .maybeSingle();
+        
+        if (membership) {
+            router.push("/dashboard");
+        } else {
+            // No org found, auto-create one
+            const firstName = userMetadata?.first_name || "Usuario";
+            await supabase.rpc('create_organization_for_user', {
+                org_name: `Organización de ${firstName}`,
+                org_data: {
+                    country: "México",
+                    state: "CDMX",
+                    fleetSize: "Sin flota",
+                    projectTypes: "General",
+                    projectsPerMonth: "0",
+                    quotesPerMonth: "0",
+                    logo: null
+                }
+            });
+            router.push("/dashboard");
+        }
+    } catch (error) {
+        console.error("Error checking org:", error);
+        // Fallback
+        router.push("/dashboard");
+    }
+  };
+
+  // Check if session exists on load
+  useEffect(() => {
+    const checkSession = async () => {
+        const { data: { session } } = await supabase.auth.getSession();
+        if (session) {
+            await ensureOrgAndRedirect(session.user.id, session.user.user_metadata);
+        }
+    };
+    checkSession();
+  }, [router]);
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setIsLoading(true)
@@ -25,7 +71,7 @@ export default function LoginPage() {
     const email = String(formData.get("email") || "")
     const password = String(formData.get("password") || "")
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     })
@@ -36,23 +82,10 @@ export default function LoginPage() {
       return
     }
 
-    // Check if user has an organization
-    const { data: { user } } = await supabase.auth.getUser();
-    if (user) {
-        const { data: membership } = await supabase
-            .from('organization_members')
-            .select('id')
-            .eq('user_id', user.id)
-            .maybeSingle(); // Use maybeSingle to avoid error if no rows found
-
-        if (membership) {
-            router.push("/dashboard");
-        } else {
-            router.push("/onboarding");
-        }
+    if (data.user) {
+        await ensureOrgAndRedirect(data.user.id, data.user.user_metadata);
     } else {
-        // Fallback
-        router.push("/onboarding");
+        router.push("/dashboard");
     }
   }
 
