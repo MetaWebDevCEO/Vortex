@@ -92,9 +92,9 @@ export default function SignupPage() {
         <div className="absolute inset-0 bg-zinc-900" />
         
         {/* Content Overlay */}
-        <div className="relative z-10 p-16 text-white max-w-xl">
+        <div className="relative z-10 p-16 text-white max-w-xl flex flex-col justify-center h-full">
             <div className="mb-8">
-                 <Image src="/Vortex_logo.svg" alt="Vortex" width={60} height={60} className="invert brightness-0" />
+                 <Image src="/Vortex_logo.svg" alt="Vortex" width={200} height={200} className="invert brightness-0" />
             </div>
             <h2 className="text-5xl font-bold mb-6 tracking-tight leading-tight">
                 Bienvenido a <br/>
@@ -115,12 +115,7 @@ export default function SignupPage() {
                  <span className="font-bold text-xl tracking-tight">Vortex</span>
             </div>
             <div>
-                <h1 className="text-xl font-bold tracking-tight text-black">
-                Crear cuenta
-                </h1>
-                <p className="text-xs text-zinc-500">
-                Configura tu organización en segundos.
-                </p>
+                
             </div>
             </div>
 
