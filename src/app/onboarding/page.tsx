@@ -139,10 +139,11 @@ export default function OnboardingPage() {
 
         // Success - Redirect to dashboard
         router.push("/dashboard");
-      } catch (error) {
+      } catch (error: any) {
         console.error("Onboarding error:", error);
-        // Fallback for demo purposes if DB setup is missing
-        router.push("/dashboard");
+        // NO REDIRIGIR SI HAY ERROR para poder depurar
+        alert(`Error creando organización: ${error.message || JSON.stringify(error)}`);
+        // router.push("/dashboard"); // Comentar esto temporalmente
       } finally {
         setIsProcessing(false);
       }
