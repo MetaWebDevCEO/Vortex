@@ -64,6 +64,13 @@ export function Topbar() {
 
   const userInitials = userData?.email ? userData.email.substring(0, 2).toUpperCase() : "U";
   const orgName = orgData?.name || "Sin Organización";
+  
+  // Construct full name safely
+  const firstName = userData?.user_metadata?.first_name || "";
+  const lastName = userData?.user_metadata?.last_name || "";
+  const fullName = firstName && lastName 
+    ? `${firstName} ${lastName}` 
+    : (firstName || userData?.email?.split('@')[0] || "Usuario");
 
   return (
     <div className="flex h-14 items-center justify-between border-b bg-background px-4 lg:px-6">
@@ -97,7 +104,7 @@ export function Topbar() {
         {/* Nombre Usuario */}
         <div className="flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors">
           <span className="font-medium">
-             {userData?.user_metadata?.first_name || userData?.email?.split('@')[0] || "Usuario"}
+             {fullName}
           </span>
           <ChevronDown className="h-3 w-3" />
         </div>
@@ -132,7 +139,7 @@ export function Topbar() {
             className="flex items-center gap-2 h-8 rounded-full bg-emerald-100 text-emerald-700 px-2.5 text-xs font-medium hover:bg-emerald-200 transition-colors"
           >
             <span className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-600 text-white text-xs font-bold">
-              M
+              {userInitials}
             </span>
             <ChevronDown className="h-3 w-3" />
           </button>
@@ -144,10 +151,10 @@ export function Topbar() {
                   Perfil
                 </p>
                 <p className="text-sm font-medium text-zinc-900">
-                  MetaWeb Dev
+                  {fullName}
                 </p>
                 <p className="text-xs text-zinc-500">
-                  user@vortex.app
+                  {userData?.email}
                 </p>
               </div>
 
