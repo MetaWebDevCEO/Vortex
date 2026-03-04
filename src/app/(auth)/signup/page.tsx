@@ -85,42 +85,50 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen w-full bg-white flex">
+    <div className="min-h-screen w-full bg-black flex">
       {/* Left Column - Image */}
-      <div className="hidden lg:flex w-1/2 relative bg-black items-center justify-center overflow-hidden">
-        <Image 
-            src="/vortexfondo.png" 
-            alt="Vortex Background" 
-            fill 
-            className="object-cover opacity-80" 
-            priority
-        />
-        <div className="relative z-10 p-12 text-white max-w-lg">
-            <h2 className="text-4xl font-bold mb-4 tracking-tight">Bienvenido al futuro de la logística.</h2>
-            <p className="text-lg text-zinc-300">Gestiona, optimiza y escala tu operación desde una sola plataforma unificada.</p>
+      <div className="hidden lg:flex w-1/2 relative items-center justify-center overflow-hidden">
+        {/* Ambient background if image fails or while loading */}
+        <div className="absolute inset-0 bg-zinc-900" />
+        
+        {/* Content Overlay */}
+        <div className="relative z-10 p-16 text-white max-w-xl">
+            <div className="mb-8">
+                 <Image src="/Vortex_logo.svg" alt="Vortex" width={60} height={60} className="invert brightness-0" />
+            </div>
+            <h2 className="text-5xl font-bold mb-6 tracking-tight leading-tight">
+                Bienvenido a <br/>
+                <span className="text-zinc-400">Vortex Platform.</span>
+            </h2>
+            <p className="text-xl text-zinc-400 font-light leading-relaxed">
+                La solución integral para gestionar, optimizar y escalar tus operaciones logísticas desde un solo lugar.
+            </p>
         </div>
       </div>
 
       {/* Right Column - Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-8 overflow-y-auto">
-        <div className="w-full max-w-md space-y-8">
-            <div className="flex flex-col gap-2">
-            <Image src="/Vortex_logo.svg" alt="Vortex" width={180} height={180} priority className="mb-4" />
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 bg-white overflow-y-auto">
+        <div className="w-full max-w-md space-y-6">
+            <div className="flex flex-col gap-1">
+            <div className="flex items-center gap-2 mb-2 lg:hidden">
+                 <Image src="/isotipo.svg" alt="Vortex" width={32} height={32} />
+                 <span className="font-bold text-xl tracking-tight">Vortex</span>
+            </div>
             <div>
-                <h1 className="text-2xl font-bold tracking-tight text-black">
+                <h1 className="text-xl font-bold tracking-tight text-black">
                 Crear cuenta
                 </h1>
-                <p className="text-sm text-zinc-500">
-                Completa el formulario para configurar tu organización.
+                <p className="text-xs text-zinc-500">
+                Configura tu organización en segundos.
                 </p>
             </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Logo Upload */}
-            <div className="space-y-2">
-                <Label className="text-zinc-700 text-xs uppercase tracking-wider font-semibold">Logo de la Empresa</Label>
-                <div className="border-2 border-dashed border-zinc-200 rounded-xl p-4 flex items-center justify-center gap-4 hover:bg-zinc-50 transition-colors cursor-pointer relative h-[100px]">
+            <form onSubmit={handleSubmit} className="space-y-4">
+            {/* Logo Upload - Compact */}
+            <div className="space-y-1.5">
+                <Label className="text-zinc-700 text-[10px] uppercase tracking-wider font-semibold">Logo</Label>
+                <div className="border border-dashed border-zinc-200 rounded-lg p-2 flex items-center justify-center gap-3 hover:bg-zinc-50 transition-colors cursor-pointer relative h-[80px]">
                     <input 
                         type="file" 
                         accept="image/*" 
@@ -128,116 +136,116 @@ export default function SignupPage() {
                         className="absolute inset-0 opacity-0 cursor-pointer z-10"
                     />
                     {logoPreview ? (
-                        <div className="relative h-16 w-16">
+                        <div className="relative h-14 w-14">
                             <Image src={logoPreview} alt="Logo Preview" fill className="object-contain" />
                         </div>
                     ) : (
                         <div className="flex flex-col items-center gap-1">
-                            <div className="h-8 w-8 rounded-full bg-zinc-100 flex items-center justify-center">
-                                <Upload className="h-4 w-4 text-zinc-400" />
+                            <div className="h-6 w-6 rounded-full bg-zinc-100 flex items-center justify-center">
+                                <Upload className="h-3 w-3 text-zinc-400" />
                             </div>
-                            <p className="text-zinc-400 text-[10px] font-medium">Subir imagen</p>
+                            <p className="text-zinc-400 text-[10px] font-medium">Subir logo</p>
                         </div>
                     )}
                 </div>
             </div>
 
-            {/* Company & Role */}
-            <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                    <Label htmlFor="company-name" className="text-zinc-700 text-xs uppercase tracking-wider font-semibold">Empresa</Label>
+            {/* Company & Role - Compact Grid */}
+            <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                    <Label htmlFor="company-name" className="text-zinc-700 text-[10px] uppercase tracking-wider font-semibold">Empresa</Label>
                     <div className="relative group">
-                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+                    <Building2 className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-500" />
                     <Input 
                         id="company-name" 
                         name="company-name"
                         placeholder="Logística Global" 
-                        className="bg-white border-zinc-200 text-zinc-900 pl-10 h-10 rounded-xl focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all text-sm"
+                        className="bg-white border-zinc-200 text-zinc-900 pl-8 h-9 rounded-lg focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all text-xs"
                         required 
                     />
                     </div>
                 </div>
 
-                <div className="space-y-2">
-                    <Label htmlFor="role" className="text-zinc-700 text-xs uppercase tracking-wider font-semibold">Puesto</Label>
+                <div className="space-y-1.5">
+                    <Label htmlFor="role" className="text-zinc-700 text-[10px] uppercase tracking-wider font-semibold">Puesto</Label>
                     <div className="relative group">
-                    <Briefcase className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+                    <Briefcase className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-500" />
                     <Input 
                         id="role" 
                         name="role"
                         placeholder="Gerente" 
-                        className="bg-white border-zinc-200 text-zinc-900 pl-10 h-10 rounded-xl focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all text-sm"
+                        className="bg-white border-zinc-200 text-zinc-900 pl-8 h-9 rounded-lg focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all text-xs"
                         required 
                     />
                     </div>
                 </div>
             </div>
 
-            {/* Name Fields */}
-            <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                <Label htmlFor="first-name" className="text-zinc-700 text-xs uppercase tracking-wider font-semibold">Nombre</Label>
+            {/* Name Fields - Compact Grid */}
+            <div className="grid grid-cols-2 gap-3">
+                <div className="space-y-1.5">
+                <Label htmlFor="first-name" className="text-zinc-700 text-[10px] uppercase tracking-wider font-semibold">Nombre</Label>
                 <div className="relative group">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+                    <User className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-500" />
                 <Input 
                     id="first-name" 
                     name="first-name"
                     placeholder="Max" 
-                    className="bg-white border-zinc-200 text-zinc-900 pl-10 h-10 rounded-xl focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all text-sm"
+                    className="bg-white border-zinc-200 text-zinc-900 pl-8 h-9 rounded-lg focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all text-xs"
                     required 
                     />
                 </div>
                 </div>
-                <div className="space-y-2">
-                <Label htmlFor="last-name" className="text-zinc-700 text-xs uppercase tracking-wider font-semibold">Apellido</Label>
+                <div className="space-y-1.5">
+                <Label htmlFor="last-name" className="text-zinc-700 text-[10px] uppercase tracking-wider font-semibold">Apellido</Label>
                 <div className="relative group">
-                    <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+                    <User className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-500" />
                     <Input 
                     id="last-name" 
                     name="last-name"
                     placeholder="Robinson" 
-                    className="bg-white border-zinc-200 text-zinc-900 pl-10 h-10 rounded-xl focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all text-sm"
+                    className="bg-white border-zinc-200 text-zinc-900 pl-8 h-9 rounded-lg focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all text-xs"
                     required 
                     />
                 </div>
                 </div>
             </div>
 
-            {/* Email */}
-            <div className="space-y-2">
-                <Label htmlFor="email" className="text-zinc-700 text-xs uppercase tracking-wider font-semibold">Email</Label>
+            {/* Email - Compact */}
+            <div className="space-y-1.5">
+                <Label htmlFor="email" className="text-zinc-700 text-[10px] uppercase tracking-wider font-semibold">Email</Label>
                 <div className="relative group">
-                <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+                <Mail className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-500" />
                 <Input 
                     id="email" 
                     name="email"
                     type="email" 
                     placeholder="tu@correo.com" 
-                    className="bg-white border-zinc-200 text-zinc-900 pl-10 h-10 rounded-xl focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all text-sm"
+                    className="bg-white border-zinc-200 text-zinc-900 pl-8 h-9 rounded-lg focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all text-xs"
                     required 
                 />
                 </div>
             </div>
             
-            {/* Password */}
-            <div className="space-y-2">
-                <Label htmlFor="password" className="text-zinc-700 text-xs uppercase tracking-wider font-semibold">Contraseña</Label>
+            {/* Password - Compact */}
+            <div className="space-y-1.5">
+                <Label htmlFor="password" className="text-zinc-700 text-[10px] uppercase tracking-wider font-semibold">Contraseña</Label>
                 <div className="relative group">
-                <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-zinc-500" />
+                <Lock className="absolute left-2.5 top-1/2 -translate-y-1/2 h-3.5 w-3.5 text-zinc-500" />
                 <Input 
                     id="password" 
                     name="password"
                     type={showPassword ? "text" : "password"} 
                     placeholder="••••••••" 
-                    className="bg-white border-zinc-200 text-zinc-900 pl-10 pr-10 h-10 rounded-xl focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all text-sm"
+                    className="bg-white border-zinc-200 text-zinc-900 pl-8 pr-8 h-9 rounded-lg focus-visible:ring-0 focus-visible:outline-none focus-visible:border-zinc-300 placeholder:text-zinc-400 transition-all text-xs"
                     required 
                 />
                 <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-black transition-colors"
+                    className="absolute right-2.5 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-black transition-colors"
                 >
-                    {showPassword ? <Eye className="h-4 w-4" /> : <EyeOff className="h-4 w-4" />}
+                    {showPassword ? <Eye className="h-3.5 w-3.5" /> : <EyeOff className="h-3.5 w-3.5" />}
                 </button>
                 </div>
             </div>
@@ -251,12 +259,12 @@ export default function SignupPage() {
             <Button
                 type="submit"
                 disabled={isLoading}
-                className="w-full bg-black text-white hover:bg-zinc-800 h-12 rounded-full font-bold tracking-wide text-base transition-all focus-visible:ring-0 focus-visible:outline-none border-0 mt-2"
+                className="w-full bg-black text-white hover:bg-zinc-800 h-10 rounded-full font-bold tracking-wide text-sm transition-all focus-visible:ring-0 focus-visible:outline-none border-0 mt-1"
             >
-                {isLoading ? "Creando cuenta..." : "Crear cuenta"}
+                {isLoading ? "Creando..." : "Crear cuenta"}
             </Button>
 
-            <div className="text-center text-sm text-zinc-500 pt-2">
+            <div className="text-center text-xs text-zinc-500 pt-1">
                 ¿Ya tienes cuenta?{" "}
                 <Link href="/login" className="text-black font-medium hover:underline underline-offset-4">
                 Ingresar
@@ -265,6 +273,5 @@ export default function SignupPage() {
             </form>
         </div>
       </div>
-    </div>
   )
 }
