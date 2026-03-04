@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { CheckCircle2, HelpCircle, User, ChevronDown, Slash } from "lucide-react";
+import { CheckCircle2, HelpCircle, User, ChevronDown, Slash, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
@@ -10,6 +10,37 @@ import { supabase } from "@/lib/supabase";
 export function Topbar() {
   const router = useRouter();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [userData, setUserData] = useState<any>(null);
+  const [orgData, setOrgData] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+        // 1. Get User
+        const { data: { user } } = await supabase.auth.getUser();
+        if (user) {
+            setUserData(user);
+
+            // 2. Get User's Organization (via helper function or direct query)
+            // Using RPC or direct select if policies allow
+            const { data: members, error } = await supabase
+                .from('organization_members')
+                .select('organization_id')
+                .eq('user_id', user.id)
+                .single();
+            
+            if (members && members.organization_id) {
+                const { data: org } = await supabase
+                    .from('organizations')
+                    .select('*')
+                    .eq('id', members.organization_id)
+                    .single();
+                
+                if (org) setOrgData(org);
+            }
+        }
+    };
+    fetchData();
+  }, []);
 
   const toggleProfile = () => {
     setIsProfileOpen((open) => !open);
@@ -31,34 +62,43 @@ export function Topbar() {
     router.push("/login");
   };
 
+  const userInitials = userData?.email ? userData.email.substring(0, 2).toUpperCase() : "U";
+  const orgName = orgData?.name || "Sin Organización";
+
   return (
     <div className="flex h-14 items-center justify-between border-b bg-background px-4 lg:px-6">
       <div className="flex items-center gap-2 text-sm text-muted-foreground">
-        {/* Logo */}
+        {/* Logo de la Organización */}
         <div className="flex items-center">
-          <Image
-            src="/isotipo.svg"
-            alt="Logo"
-            width={24}
-            height={24}
-            className="h-6 w-auto text-emerald-500"
-          />
+            {orgData?.logo_url ? (
+                <div className="relative h-8 w-8 rounded-sm overflow-hidden">
+                     <Image
+                        src={orgData.logo_url}
+                        alt="Org Logo"
+                        fill
+                        className="object-contain"
+                    />
+                </div>
+            ) : (
+                <Building2 className="h-6 w-6 text-emerald-500" />
+            )}
         </div>
 
         <Slash className="h-4 w-4 text-muted-foreground/40 -rotate-12" />
 
-        {/* Project Selector */}
+        {/* Nombre Organización */}
         <div className="flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors">
-          <span className="font-medium text-foreground">MetaWeb Dev</span>
-          <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded-full border">Free</span>
+          <span className="font-medium text-foreground">{orgName}</span>
           <ChevronDown className="h-3 w-3" />
         </div>
 
         <Slash className="h-4 w-4 text-muted-foreground/40 -rotate-12" />
 
-        {/* Current Context */}
+        {/* Nombre Usuario */}
         <div className="flex items-center gap-1 cursor-pointer hover:text-foreground transition-colors">
-          <span className="font-medium">metavortex</span>
+          <span className="font-medium">
+             {userData?.user_metadata?.first_name || userData?.email?.split('@')[0] || "Usuario"}
+          </span>
           <ChevronDown className="h-3 w-3" />
         </div>
       </div>

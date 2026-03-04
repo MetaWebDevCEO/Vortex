@@ -109,43 +109,33 @@ export default function OnboardingPage() {
       setIsProcessing(true);
       try {
         const { data: { user } } = await supabase.auth.getUser();
-        if (!user) throw new Error("No user found");
+        if (!user) {
+            console.error("No user found in auth.getUser()");
+            throw new Error("No user found");
+        }
+        
+        console.log("Creating organization for user:", user.id);
 
-        // 1. Create Organization
-        const { data: org, error: orgError } = await supabase
-          .from('organizations')
-          .insert({
-            name: data.companyName,
+        // Use RPC function to create organization and member atomically
+        const { data: orgId, error: rpcError } = await supabase.rpc('create_organization_for_user', {
+          org_name: data.companyName,
+          org_data: {
             country: data.country,
             state: data.state,
-            fleet_size: data.fleetSize,
-            project_types: data.projectTypes,
-            projects_per_month: data.projectsPerMonth,
-            quotes_per_month: data.quotesPerMonth,
-            logo_url: data.logo // Note: In a real app, upload image first and get URL
-          })
-          .select()
-          .single();
+            fleetSize: data.fleetSize,
+            projectTypes: data.projectTypes,
+            projectsPerMonth: data.projectsPerMonth,
+            quotesPerMonth: data.quotesPerMonth,
+            logo: data.logo
+          }
+        });
 
-        if (orgError) {
-            console.error("Error creating org:", orgError);
-            // If RLS blocks this, we might need a server action or trigger
-            throw orgError;
+        if (rpcError) {
+            console.error("Error creating org via RPC:", rpcError);
+            throw rpcError;
         }
 
-        // 2. Link User as Owner
-        const { error: memberError } = await supabase
-          .from('organization_members')
-          .insert({
-            organization_id: org.id,
-            user_id: user.id,
-            role: 'owner'
-          });
-
-        if (memberError) {
-             console.error("Error linking member:", memberError);
-             throw memberError;
-        }
+        console.log("Organization created successfully with ID:", orgId);
 
         // Success - Redirect to dashboard
         router.push("/dashboard");
