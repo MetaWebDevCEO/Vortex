@@ -36,7 +36,24 @@ export default function LoginPage() {
       return
     }
 
-    router.push("/onboarding")
+    // Check if user has an organization
+    const { data: { user } } = await supabase.auth.getUser();
+    if (user) {
+        const { data: membership } = await supabase
+            .from('organization_members')
+            .select('id')
+            .eq('user_id', user.id)
+            .maybeSingle(); // Use maybeSingle to avoid error if no rows found
+
+        if (membership) {
+            router.push("/dashboard");
+        } else {
+            router.push("/onboarding");
+        }
+    } else {
+        // Fallback
+        router.push("/onboarding");
+    }
   }
 
   return (
