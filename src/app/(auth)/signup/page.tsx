@@ -94,7 +94,7 @@ export default function SignupPage() {
         {/* Content Overlay */}
         <div className="relative z-10 p-16 text-white max-w-xl flex flex-col justify-center h-full">
             <div className="mb-8">
-                 <Image src="/Vortex_logo.svg" alt="Vortex" width={200} height={200} className="invert brightness-0" />
+                 <Image src="/Vortex_logo.svg" alt="Vortex" width={400} height={400} className="invert brightness-0" />
             </div>
             <h2 className="text-5xl font-bold mb-6 tracking-tight leading-tight">
                 Bienvenido a <br/>
