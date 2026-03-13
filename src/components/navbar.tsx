@@ -22,22 +22,22 @@ export function Navbar() {
   const navLinks = [
     { label: "Productos", href: "/productos", hasDropdown: true },
     { label: "Funcionalidades", href: "/funcionalidades" },
-    { label: "Documentación", href: "/docs" },
-    { label: "Precios", href: "/pricing" },
-    { label: "Integraciones", href: "/integrations", hasDropdown: true },
+    { label: "Documentación", href: "/documentacion" },
+    { label: "Precios", href: "/precios" },
+    { label: "Integraciones", href: "/integraciones", hasDropdown: true },
     { label: "Blog", href: "/blog" },
-    { label: "Recursos", href: "/resources", hasDropdown: true },
+    { label: "Recursos", href: "/recursos", hasDropdown: true },
   ];
 
   const mega: any = {
     Productos: {
       leftTitle: "Módulos",
       left: [
-        { label: "TMS y Despacho", href: "/productos/tms", icon: Box },
-        { label: "Tracking en Vivo", href: "/productos/tracking", icon: Map, badge: "Nuevo" },
-        { label: "Ruteo y Optimización", href: "/productos/routing", icon: Route },
-        { label: "Búsqueda y Consultas", href: "/productos/search", icon: Search },
-        { label: "Analítica de Costos", href: "/productos/analytics", icon: Zap },
+        { label: "TMS y Despacho", href: "/productos", icon: Box },
+        { label: "Tracking en Vivo", href: "/productos", icon: Map, badge: "Nuevo" },
+        { label: "Ruteo y Optimización", href: "/productos", icon: Route },
+        { label: "Búsqueda y Consultas", href: "/productos", icon: Search },
+        { label: "Analítica de Costos", href: "/productos", icon: Zap },
       ],
       midTitle: "Casos de uso",
       mid: [
@@ -58,19 +58,19 @@ export function Navbar() {
       left: [
         {
           label: "Workflow Automation",
-          href: "/integrations/workflow",
+          href: "/integraciones",
           icon: Box,
           desc: "Zapier, n8n, Make y más",
         },
         {
           label: "LLM SDKs & Frameworks",
-          href: "/integrations/llm",
+          href: "/integraciones",
           icon: Zap,
           desc: "LangChain, OpenAI y otros",
         },
         {
           label: "AI App Builders",
-          href: "/integrations/app-builders",
+          href: "/integraciones",
           icon: ExternalLink,
           desc: "Conecta plataformas low‑code",
         },
@@ -79,19 +79,19 @@ export function Navbar() {
       mid: [
         {
           label: "Model Context Protocol",
-          href: "/integrations/mcp",
+          href: "/integraciones",
           icon: Box,
           desc: "Claude Code, Cursor y más",
         },
         {
           label: "Vortex Skill",
-          href: "/integrations/skill",
+          href: "/integraciones",
           icon: Zap,
           desc: "Acceso a datos logísticos en tiempo real",
         },
         {
           label: "Ver todas las integraciones",
-          href: "/integrations",
+          href: "/integraciones",
           icon: ArrowRight,
           desc: "Explora todo el catálogo",
         },
@@ -100,26 +100,26 @@ export function Navbar() {
     Recursos: {
       leftTitle: "Recursos",
       left: [
-        { label: "Guías y Tutoriales", href: "/resources/guides", icon: Search },
-        { label: "API Reference", href: "/docs/api", icon: ExternalLink },
+        { label: "Guías y Tutoriales", href: "/recursos", icon: Search },
+        { label: "API Reference", href: "/documentacion", icon: ExternalLink },
         { label: "Status", href: "/status", icon: Zap },
       ],
       midTitle: "Para equipos",
       mid: [
-        { label: "Ingeniería", href: "/resources/engineering" },
-        { label: "Operaciones", href: "/resources/ops" },
-        { label: "Ver más", href: "/resources", icon: ArrowRight },
+        { label: "Ingeniería", href: "/recursos" },
+        { label: "Operaciones", href: "/recursos" },
+        { label: "Ver más", href: "/recursos", icon: ArrowRight },
       ],
       rightTitle: "Historias de clientes",
       right: {
         title: "Aprende de implementaciones reales",
-        cta: { label: "Explorar recursos", href: "/resources", ext: false },
+        cta: { label: "Explorar recursos", href: "/recursos", ext: false },
       },
     },
   };
 
   return (
-    <div className="fixed top-0 z-50 w-full flex flex-col">
+    <div className="sticky top-0 z-50 w-full flex flex-col">
       {/* Announcement Banner */}
       <div className="w-full bg-black py-2.5 px-4 flex items-center justify-center gap-2 group cursor-pointer transition-colors hover:bg-[#111111]">
         <p className="text-[11px] sm:text-xs text-white font-medium tracking-wide flex items-center">
