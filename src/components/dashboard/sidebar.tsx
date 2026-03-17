@@ -24,7 +24,7 @@ import {
 
 import Image from "next/image";
 
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {}
+type SidebarProps = React.HTMLAttributes<HTMLDivElement>;
 
 type SidebarItem = {
     label: string;

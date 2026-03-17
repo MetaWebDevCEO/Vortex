@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useCallback } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { Eye, EyeOff, Lock, Mail } from "lucide-react"
@@ -17,7 +17,7 @@ export default function LoginPage() {
   const [errorMessage, setErrorMessage] = useState<string | null>(null)
 
   // Helper function to check/ensure organization
-  const ensureOrgAndRedirect = async (userId: string, userMetadata: any) => {
+  const ensureOrgAndRedirect = useCallback(async (userId: string, userMetadata: Record<string, unknown>) => {
     try {
         const { data: membership } = await supabase
             .from('organization_members')
@@ -29,7 +29,8 @@ export default function LoginPage() {
             router.push("/dashboard");
         } else {
             // No org found, auto-create one
-            const firstName = userMetadata?.first_name || "Usuario";
+            const maybeFirstName = userMetadata["first_name"];
+            const firstName = typeof maybeFirstName === "string" && maybeFirstName ? maybeFirstName : "Usuario";
             await supabase.rpc('create_organization_for_user', {
                 org_name: `Organización de ${firstName}`,
                 org_data: {
@@ -49,7 +50,7 @@ export default function LoginPage() {
         // Fallback
         router.push("/dashboard");
     }
-  };
+  }, [router]);
 
   // Check if session exists on load
   useEffect(() => {
@@ -60,7 +61,7 @@ export default function LoginPage() {
         }
     };
     checkSession();
-  }, [router]);
+  }, [ensureOrgAndRedirect]);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()

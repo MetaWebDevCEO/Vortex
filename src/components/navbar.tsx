@@ -3,6 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, ChevronRight, Search, Map, Route, Box, Zap, ExternalLink, ArrowRight, ChevronDown } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -18,6 +19,34 @@ import {
   NavigationMenuLink,
 } from "@/components/ui/navigation-menu";
 
+type MegaItem = {
+  label: string;
+  href: string;
+  icon?: LucideIcon;
+  badge?: string;
+  desc?: string;
+};
+
+type MegaCta = {
+  label: string;
+  href: string;
+  ext: boolean;
+};
+
+type MegaSection = {
+  leftTitle: string;
+  left: MegaItem[];
+  midTitle?: string;
+  mid?: MegaItem[];
+  rightTitle?: string;
+  right?: {
+    title: string;
+    cta: MegaCta;
+  };
+};
+
+type MegaMap = Record<string, MegaSection>;
+
 export function Navbar() {
   const navLinks = [
     { label: "Productos", href: "/productos", hasDropdown: true },
@@ -29,7 +58,7 @@ export function Navbar() {
     { label: "Recursos", href: "/recursos", hasDropdown: true },
   ];
 
-  const mega: any = {
+  const mega: MegaMap = {
     Productos: {
       leftTitle: "Módulos",
       left: [
@@ -167,7 +196,7 @@ export function Navbar() {
                                 {mega[link.label]?.leftTitle}
                               </div>
                               <ul className="mt-3 space-y-3">
-                                {(mega[link.label]?.left || []).map((item: any) => (
+                                {(mega[link.label]?.left || []).map((item) => (
                                   <li key={item.label}>
                                     <NavigationMenuLink asChild>
                                       <Link
@@ -200,7 +229,7 @@ export function Navbar() {
                                 {mega[link.label]?.midTitle}
                               </div>
                               <ul className="mt-3 space-y-3">
-                                {(mega[link.label]?.mid || []).map((item: any) => (
+                                {(mega[link.label]?.mid || []).map((item) => (
                                   <li key={item.label}>
                                     <NavigationMenuLink asChild>
                                       <Link
@@ -236,7 +265,7 @@ export function Navbar() {
                                   {mega[link.label]?.leftTitle}
                                 </div>
                                 <ul className="divide-y divide-[#f0f0f0]">
-                                  {(mega[link.label]?.left || []).map((item: any) => (
+                                  {(mega[link.label]?.left || []).map((item) => (
                                     <li key={item.label}>
                                       <NavigationMenuLink asChild>
                                         <Link
@@ -269,7 +298,7 @@ export function Navbar() {
                                   {mega[link.label]?.midTitle}
                                 </div>
                                 <ul className="divide-y divide-[#f0f0f0]">
-                                  {(mega[link.label]?.mid || []).map((item: any) => (
+                                  {(mega[link.label]?.mid || []).map((item) => (
                                     <li key={item.label}>
                                       <NavigationMenuLink asChild>
                                         <Link

@@ -1,34 +1,29 @@
 "use client";
 
-import { useMemo, useState, useEffect } from "react";
+import { useMemo } from "react";
 
 export function AsciiBackground() {
-  const [mounted, setMounted] = useState(false);
-  
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const characters = ".:-=+X*|/\\\\";
   
   const pattern = useMemo(() => {
     const rows = 40;
     const cols = 80;
     let grid = "";
+    const hash = (i: number, j: number) => {
+      let x = (i + 1) * 374761393 + (j + 1) * 668265263;
+      x = (x ^ (x >> 13)) * 1274126177;
+      return x ^ (x >> 16);
+    };
     for (let i = 0; i < rows; i++) {
       for (let j = 0; j < cols; j++) {
-        const char = characters[Math.floor(Math.random() * characters.length)];
+        const idx = Math.abs(hash(i, j)) % characters.length;
+        const char = characters[idx];
         grid += char + " ";
       }
       grid += "\n";
     }
     return grid;
   }, []);
-
-  // Prevenir errores de hidratación renderizando solo en el cliente
-  if (!mounted) {
-    return <div className="absolute inset-0 -z-10 bg-white" />;
-  }
 
   return (
     <div className="absolute inset-0 -z-10 overflow-hidden bg-white">

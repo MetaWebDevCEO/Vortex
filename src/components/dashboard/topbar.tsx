@@ -6,12 +6,18 @@ import { Bell, User, ChevronDown, Slash, Building2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { supabase } from "@/lib/supabase";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
+
+type OrgData = {
+  name?: string | null;
+  logo_url?: string | null;
+};
 
 export function Topbar() {
   const router = useRouter();
   const [isProfileOpen, setIsProfileOpen] = useState(false);
-  const [userData, setUserData] = useState<any>(null);
-  const [orgData, setOrgData] = useState<any>(null);
+  const [userData, setUserData] = useState<SupabaseUser | null>(null);
+  const [orgData, setOrgData] = useState<OrgData | null>(null);
 
   useEffect(() => {
     const fetchData = async () => {
