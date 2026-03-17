@@ -51,36 +51,39 @@ export function configureAmplify() {
   const restApiEndpoint = env.NEXT_PUBLIC_REST_API_ENDPOINT;
   const restApiRegion = env.NEXT_PUBLIC_REST_API_REGION || region;
 
-  Amplify.configure(
-    {
-      Auth: {
-        Cognito: {
-          userPoolId,
-          userPoolClientId,
-          identityPoolId: identityPoolId || undefined,
-        },
+  const amplifyConfig = {
+    Auth: {
+      Cognito: {
+        userPoolId,
+        userPoolClientId,
+        ...(identityPoolId ? { identityPoolId } : {}),
       },
-      Storage: s3Bucket
-        ? {
+    },
+    ...(s3Bucket
+      ? {
+          Storage: {
             S3: {
               bucket: s3Bucket,
               region,
             },
-          }
-        : undefined,
-      API: restApiEndpoint
-        ? {
+          },
+        }
+      : {}),
+    ...(restApiEndpoint
+      ? {
+          API: {
             REST: {
               core: {
                 endpoint: restApiEndpoint,
                 region: restApiRegion,
               },
             },
-          }
-        : undefined,
-    },
-    { ssr: true },
-  );
+          },
+        }
+      : {}),
+  };
+
+  Amplify.configure(amplifyConfig, { ssr: true });
 
   isConfigured = true;
 }
