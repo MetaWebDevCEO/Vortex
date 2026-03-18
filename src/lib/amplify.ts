@@ -12,6 +12,8 @@ import { get, post } from "aws-amplify/api";
 
 let isConfigured = false;
 
+type ApiPostBody = Parameters<typeof post>[0] extends { options?: { body?: infer B } } ? B : never;
+
 type AmplifyPublicEnv = {
   NEXT_PUBLIC_AWS_REGION?: string;
   NEXT_PUBLIC_COGNITO_USER_POOL_ID?: string;
@@ -83,7 +85,7 @@ export function configureAmplify() {
       : {}),
   };
 
-  Amplify.configure(amplifyConfig, { ssr: true });
+  Amplify.configure(amplifyConfig as unknown as Parameters<typeof Amplify.configure>[0], { ssr: true });
 
   isConfigured = true;
 }
@@ -175,7 +177,7 @@ export async function apiGet(params: {
 
 export async function apiPost(params: {
   path: string;
-  body?: unknown;
+  body?: ApiPostBody;
   headers?: Record<string, string>;
 }) {
   configureAmplify();
