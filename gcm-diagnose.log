@@ -1,0 +1,229 @@
+﻿Diagnose log at 2026-03-18T05:02:44Z
+
+AppPath: C:\Program Files\Git\mingw64\bin\git-credential-manager.exe
+InstallDir: C:\Program Files\Git\mingw64\bin\
+Version: 2.6.1+786ab03440ddc82e807a97c0e540f5247e44cec6
+
+------------
+Diagnostic: Environment
+Skipped: False
+Success: True
+Exception: None
+Log:
+OSType: Windows
+OSVersion: 10.0 (build 26200)
+Reading environment variables... OK
+ Variables:
+OneDrive=C:\Users\babyb\OneDrive
+TRAE_BRAND_NAME=Trae
+PUBLIC=C:\Users\Public
+VSCODE_DEBUGPY_ADAPTER_ENDPOINTS=c:\Users\babyb\.trae\extensions\ms-python.debugpy-2025.18.0-win32-x64\.noConfigDebugAdapterEndpoints\endpoint-9c60da0536e27609.txt
+ALLUSERSPROFILE=C:\ProgramData
+isArchMatched=1
+LOGONSERVER=\\UBUNTU
+LOCALAPPDATA=C:\Users\babyb\AppData\Local
+ProgramData=C:\ProgramData
+TRAE_SANDBOX_TRACE_FILE=c:\Users\babyb\AppData\Local\Temp\trae_sandbox_trace_5c34fc95-fbc2-4838-9ccf-1aadd44ad0f7.jsonl
+VSCODE_INJECTION=1
+SAFE_RM_PROTECTION_FLAG=c:\Users\babyb\AppData\Local\Temp\safe-rm-protection-flag-e2e22a28-0a28-4660-b15c-18b5ccb5653a
+TMPDIR=C:\Users\babyb\AppData\Local\Temp
+SESSIONNAME=Console
+BUNDLED_DEBUGPY_PATH=c:\Users\babyb\.trae\extensions\ms-python.debugpy-2025.18.0-win32-x64\bundled\libs\debugpy
+ProgramW6432=C:\Program Files
+TRAE_SANDBOX_LOG_DIR=c:\Users\babyb\AppData\Roaming\Trae\logs\20260317T152926\Modular
+MSYSTEM=MINGW64
+PYTHONSTARTUP=c:\Users\babyb\AppData\Roaming\Trae\User\workspaceStorage\8d5d3afe63070c998b540ce5f4c09475\ms-python.python\pythonrc.py
+VSCODE_GIT_ASKPASS_MAIN=c:\Users\babyb\AppData\Local\Programs\Trae\resources\app\extensions\git\dist\askpass-main.js
+SystemDrive=C:
+ZES_ENABLE_SYSMAN=1
+TRAE_JWT_TOKEN_PATH=C:\Users\babyb\.trae\trae-jwt-token
+OS=Windows_NT
+PROCESSOR_ARCHITECTURE=x86
+CLAUDE_CODE_SSE_PORT=55353
+PATHEXT=.COM;.EXE;.BAT;.CMD;.VBS;.VBE;.JS;.JSE;.WSF;.WSH;.MSC;.CPL
+TRAE_SANDBOX_DUMP_DIR=C:\Users\babyb\AppData\Roaming\Trae\Crashpad\sandbox-pending
+PYDEVD_DISABLE_FILE_VALIDATION=1
+IGCCSVC_DB=AQAAANCMnd8BFdERjHoAwE/Cl+sBAAAAYxBur1ux1EyYncJ74JJ1UgQAAAACAAAAAAAQZgAAAAEAACAAAAAg/QS4I2mWOMLKHBqT1mWBW2xi6FUaP2a2snDS/KPmQwAAAAAOgAAAAAIAACAAAABJkTi9mbDzN2sO6BRBSvDai26dyXpplr5ItKrfirJNS2AAAAA00273jTYRzzLmyfJlwZFugQ/XL/+oqFFZVKoxQxUFFpK2h1oJ0MOMdv7nVmtct7fD2TtIiEay/yqam0emUD+msJ02/qAK7WtNP3wgctyIywsNQQZTwU5G3XSKB5hFe6dAAAAA6OckcDXHgznUJVgIOpPy/XnnxDA8jxNS+BzCWS2arMjKuV5tkERm4qRtuUNNTXWmPuSRmqji2PaGvNieVIfwew==
+EFC_10840_2775293581=1
+CommonProgramW6432=C:\Program Files\Common Files
+AHA_CHROME_CRASHPAD_PIPE_NAME=\\.\pipe\crashpad_26900_SHHFPFIJEDLRISJV
+ProgramFiles(x86)=C:\Program Files (x86)
+VSCODE_GIT_ASKPASS_EXTRA_ARGS=
+GIT_EXEC_PATH=C:/Program Files/Git/mingw64/libexec/git-core
+USERNAME=babyb
+EFC_10840_1262719628=1
+GIT_ASKPASS=c:\Users\babyb\AppData\Local\Programs\Trae\resources\app\extensions\git\dist\askpass.sh
+CommonProgramFiles=C:\Program Files (x86)\Common Files
+TERM_PROGRAM_VERSION=1.107.1
+TRAE_SANDBOX_CONFIG_NAME=69b5cfabd76867df3c77cdce
+PYTHON_BASIC_REPL=1
+TERM=xterm-256color
+LANG=en_US.UTF-8
+ProgramFiles=C:\Program Files (x86)
+EFC_10840_2283032206=1
+TRAE_SANDBOX_STORAGE_PATH=C:\Users\babyb\AppData\Roaming\Trae\ModularData\ai-agent\sandbox
+PSModulePath=C:\Users\babyb\OneDrive\Documentos\WindowsPowerShell\Modules;C:\Program Files\WindowsPowerShell\Modules;C:\WINDOWS\system32\WindowsPowerShell\v1.0\Modules
+EFC_10840_1592913036=1
+PROCESSOR_REVISION=ba02
+MIC_LD_LIBRARY_PATH=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\compiler\lib\mic
+SAFE_RM_ALLOWED_PATH=c:\Users\babyb\OneDrive\Escritorio\vortex;c:\Users\babyb\OneDrive\Escritorio\vortex
+FPS_BROWSER_APP_PROFILE_STRING=Internet Explorer
+VSCODE_GIT_IPC_HANDLE=\\.\pipe\vscode-git-8346d30771-sock
+COMPUTERNAME=UBUNTU
+SAFE_RM_SOURCE_FLAG=c:\Users\babyb\AppData\Local\Temp\safe-rm-source-flag-4ca26837-fb4c-49ec-b077-2fef38d74a5e
+SAFE_RM_DENIED_PATH=c:\Users\babyb\OneDrive\Escritorio\vortex\.vscode;c:\Users\babyb\OneDrive\Escritorio\vortex\.vscode;c:\Users\babyb\OneDrive\Escritorio\vortex\.trae;c:\Users\babyb\OneDrive\Escritorio\vortex\.trae;c:\Users\babyb\OneDrive\Escritorio\vortex\.git;c:\Users\babyb\OneDrive\Escritorio\vortex\.git
+CommonProgramFiles(x86)=C:\Program Files (x86)\Common Files
+FPS_BROWSER_USER_PROFILE_STRING=Default
+SystemRoot=C:\WINDOWS
+ComSpec=C:\WINDOWS\system32\cmd.exe
+PLINK_PROTOCOL=ssh
+PROCESSOR_LEVEL=6
+TRAE_SANDBOX_CLI_PATH=c:\Users\babyb\AppData\Local\Programs\Trae\resources\app\modules\sandbox\trae-sandbox.exe
+HOMEDRIVE=C:
+OneDriveConsumer=C:\Users\babyb\OneDrive
+DriverData=C:\Windows\System32\Drivers\DriverData
+USERPROFILE=C:\Users\babyb
+AI_AGENT=TRAE
+PROCESSOR_IDENTIFIER=Intel64 Family 6 Model 186 Stepping 2, GenuineIntel
+Path=C:/Program Files/Git/mingw64/libexec/git-core;C:\Program Files\Git\mingw64\bin;C:\Program Files\Git\usr\bin;C:\Users\babyb\bin;c:\\Users\\babyb\\.trae\\tools\\trae-gopls\\current;c:\\Users\\babyb\\.trae\\sdks\\workspaces\\8d5d3afe\\versions\\node\\current;c:\\Users\\babyb\\.trae\\sdks\\versions\\node\\current;c:\Users\babyb\.trae\tools\trae-gopls\current;c:\Users\babyb\.trae\sdks\workspaces\8d5d3afe\versions\node\current;c:\Users\babyb\.trae\sdks\versions\node\current;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files\dotnet\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\Program Files\NVIDIA Corporation\NVIDIA NvDLISR;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\nodejs\;C:\Program Files\Warp\bin;C:\Program Files\Git\cmd;C:\Program Files\Docker\Docker\resources\bin;C:\Users\babyb\AppData\Local\Microsoft\WindowsApps;C:\Users\babyb\AppData\Roaming\npm;C:\Users\babyb\AppData\Local\GitHubDesktop\bin;C:\Users\babyb\AppData\Local\Programs\Antigravity\bin;c:\Users\babyb\.trae\extensions\ms-python.debugpy-2025.18.0-win32-x64\bundled\scripts\noConfigScripts
+windir=C:\WINDOWS
+TRAE_SANDBOX_COMMAND_LINE=git credential-manager diagnose
+TRAE_AI_SHELL_ID=2
+INTEL_DEV_REDIST=C:\Program Files (x86)\Common Files\Intel\Shared Libraries\
+APPDATA=C:\Users\babyb\AppData\Roaming
+SHIM_MCCOMPAT=0x810000001
+TERM_PROGRAM=vscode
+USERDOMAIN=UBUNTU
+NUMBER_OF_PROCESSORS=16
+VSCODE_GIT_ASKPASS_NODE=C:\Users\babyb\AppData\Local\Programs\Trae\Trae.exe
+TMP=C:\Users\babyb\AppData\Local\Temp
+USERDOMAIN_ROAMINGPROFILE=UBUNTU
+EFC_10840_3789132940=1
+GIT_TRACE2_PARENT_SID=e473e7df-cd89-4342-b54d-7ca7589cca6f
+HOMEPATH=\Users\babyb
+VSCODE_PYTHON_AUTOACTIVATE_GUARD=1
+NVIDIAWHITELISTED=0x01
+COLORTERM=truecolor
+TRAE_SANDBOX_SOURCE_FLAG_PATH=c:\Users\babyb\AppData\Local\Temp\sandbox-source-flag-b819478a-557c-4196-a7ba-499b1f61d1ef
+HOME=C:\Users\babyb
+PROCESSOR_ARCHITEW6432=AMD64
+TEMP=C:\Users\babyb\AppData\Local\Temp
+TERM_PRODUCT=Trae
+SAFE_RM_AUTO_ADD_TEMP=1
+
+
+------------
+Diagnostic: File system
+Skipped: False
+Success: True
+Exception: None
+Log:
+Temporary directory is 'C:\Users\babyb\AppData\Local\Temp\'...
+Checking basic file I/O...
+Writing to temporary file 'C:\Users\babyb\AppData\Local\Temp\c70e42518a8fd29b2d8c4d99'... OK
+Reading from temporary file 'C:\Users\babyb\AppData\Local\Temp\c70e42518a8fd29b2d8c4d99'... OK
+Deleting temporary file 'C:\Users\babyb\AppData\Local\Temp\c70e42518a8fd29b2d8c4d99'... OK
+Testing IFileSystem instance...
+UserHomePath: C:\Users\babyb
+UserDataDirectoryPath: C:\Users\babyb\.gcm
+GetCurrentDirectory(): C:\Users\babyb\OneDrive\Escritorio\vortex
+
+------------
+Diagnostic: Networking
+Skipped: False
+Success: True
+Exception: None
+Log:
+Checking networking and HTTP stack...
+Creating HTTP client... OK
+IsNetworkAvailable: True
+Sending HEAD request to http://example.com...Sending HEAD request to https://example.com... OK
+ OK
+Acquiring free TCP port... OK
+Testing local HTTP loopback connections...
+Creating new HTTP listener for http://localhost:49682/... OK
+Waiting for loopback connection... OK
+Writing response... OK
+Waiting for response data... OK
+Loopback connection data OK
+
+------------
+Diagnostic: Git
+Skipped: False
+Success: True
+Exception: None
+Log:
+Getting Git version... OK
+Git version is '2.52.0.windows.1'
+Locating current repository...Git repository at 'C:/Users/babyb/OneDrive/Escritorio/vortex/.git'
+ OK
+Listing all Git configuration... OK
+Git configuration:
+file:C:/Program Files/Git/etc/gitconfig	diff.astextplain.textconv=astextplain
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.clean=git-lfs clean -- %f
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.smudge=git-lfs smudge -- %f
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.process=git-lfs filter-process
+file:C:/Program Files/Git/etc/gitconfig	filter.lfs.required=true
+file:C:/Program Files/Git/etc/gitconfig	http.sslbackend=schannel
+file:C:/Program Files/Git/etc/gitconfig	core.autocrlf=true
+file:C:/Program Files/Git/etc/gitconfig	core.fscache=true
+file:C:/Program Files/Git/etc/gitconfig	core.symlinks=false
+file:C:/Program Files/Git/etc/gitconfig	pull.rebase=false
+file:C:/Program Files/Git/etc/gitconfig	init.defaultbranch=master
+file:C:/Users/babyb/.gitconfig	gui.recentrepo=C:/Users/babyb/KHshop
+file:C:/Users/babyb/.gitconfig	filter.lfs.clean=git-lfs clean -- %f
+file:C:/Users/babyb/.gitconfig	filter.lfs.smudge=git-lfs smudge -- %f
+file:C:/Users/babyb/.gitconfig	filter.lfs.process=git-lfs filter-process
+file:C:/Users/babyb/.gitconfig	filter.lfs.required=true
+file:C:/Users/babyb/.gitconfig	user.name=MetaWebDev
+file:C:/Users/babyb/.gitconfig	user.email=metawebdevsolutions@gmail.com
+file:C:/Users/babyb/.gitconfig	safe.directory=*
+file:C:/Users/babyb/.gitconfig	credential.helper=manager
+file:.git/config	core.repositoryformatversion=0
+file:.git/config	core.filemode=false
+file:.git/config	core.bare=false
+file:.git/config	core.logallrefupdates=true
+file:.git/config	core.symlinks=false
+file:.git/config	core.ignorecase=true
+file:.git/config	remote.origin.url=https://github.com/MetaWebDevCEO/Vortex
+file:.git/config	remote.origin.fetch=+refs/heads/*:refs/remotes/origin/*
+file:.git/config	branch.main.remote=origin
+file:.git/config	branch.main.vscode-merge-base=origin/main
+file:.git/config	branch.main.merge=refs/heads/main
+
+
+------------
+Diagnostic: Credential storage
+Skipped: False
+Success: True
+Exception: None
+Log:
+ICredentialStore instance is of type: CredentialStore
+Writing test credential... OK
+Reading test credential... OK
+Deleting test credential... OK
+
+------------
+Diagnostic: Microsoft authentication (AAD/MSA)
+Skipped: False
+Success: True
+Exception: None
+Log:
+Broker is not enabled.
+Flow type is: Auto
+Gathering MSAL token cache data... OK
+CacheDirectory: C:\Users\babyb\AppData\Local\.IdentityService
+CacheFileName: msal.cache
+CacheFilePath: C:\Users\babyb\AppData\Local\.IdentityService\msal.cache
+Creating cache helper... OK
+Verifying MSAL token cache persistence... OK
+
+------------
+Diagnostic: GitHub API
+Skipped: False
+Success: True
+Exception: None
+Log:
+Using 'https://github.com/' as API target.
+Querying '/meta' endpoint... OK
+
